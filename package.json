@@ -1,0 +1,19 @@
+{
+  "name": "trivia_project",
+  "version": "0.0.1",
+  "description": "CS 499 Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zachprinz/trivia_project.git"
+  },
+  "author": "GMU CS 499 Trivia Group",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zachprinz/trivia_project/issues"
+  },
+  "homepage": "https://github.com/zachprinz/trivia_project#readme"
+}
