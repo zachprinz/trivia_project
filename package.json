@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/zachprinz/trivia_project/issues"
   },
-  "homepage": "https://github.com/zachprinz/trivia_project#readme"
+  "homepage": "https://github.com/zachprinz/trivia_project#readme",
+  "dependencies": {
+    "mustache": "^2.2.1"
+  }
 }
