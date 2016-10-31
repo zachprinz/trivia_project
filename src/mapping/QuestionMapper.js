@@ -6,7 +6,7 @@ var {QuestionDB} = require('../model/schemas/question.js');
 var {Question} = require('../model/question.js');
 
 function getRandomIndex(max) {
-  return Math.floor(Math.random() * (max - 1));
+  return Math.floor(Math.random() * max);
 }
 
 module.exports = {
@@ -35,7 +35,6 @@ module.exports = {
       QuestionDB.find().then(
         questions => {
           var index = getRandomIndex(questions.length);
-          console.log('index: ' + index);
           var {question, answers, correct, _id} = questions[index];
           var q = new Question(question, answers, correct, _id);
           resolve(q);

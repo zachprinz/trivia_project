@@ -48,7 +48,6 @@ app.post('/answer', function(req, res) {
 
 app.get('/next', function(req, res) {
   QuestionMapper.findAny().then(function(question) {
-    console.log('found next q');
     res.render('../partials/qa.hbs', question);
   }, function(err) {console.log(err)});
   // Respond with the next question and answer
