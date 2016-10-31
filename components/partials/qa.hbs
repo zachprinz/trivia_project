@@ -1,6 +1,7 @@
 <p>{{question}}</p>
 <ul>
   {{#each answers}}
-    <li>{{this}}</li>
+    <input type="radio" name="answer" value="{{../ObjectID}}">{{this}}<br>
   {{/each}}
 </ul>
+<button type="button" id="answer_submit_button">Submit</button>

@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const hbs = require('hbs');
 
+
 var {mongoose} = require('./model/db');
 var {Question} = require('./model/question.js');
 
@@ -14,6 +15,8 @@ hbs.registerPartials(__dirname + '/../components/partials');
 app.set('view engine', 'hbs');
 // Tell the template engine where to find the template files
 app.set('views', __dirname + '/../components/views');
+
+app.use(express.static(__dirname + '/../components'));
 
 var url = 'none';
 app.use(function(req, res, next) {
@@ -33,7 +36,13 @@ app.get('/play', function(req, res) {
   Question.find().then(
     // On Succeed
     function(questions) {
-      res.render('player.hbs', questions[0]);
+      var {question, answers, _id} = questions[0];
+      var qData = {
+        question: question,
+        answers: answers,
+        ObjectID: _id.toString(),
+      }
+      res.render('player.hbs', qData);
     },
     // On Fail
     function(err) {
@@ -43,16 +52,15 @@ app.get('/play', function(req, res) {
   )
 });
 
-
 // Handle HTTP GET requests at root '/hub'
 app.get('/hub', function(req, res) {
   res.render('hub.hbs');
 });
 
-app.post('/_answer', function(req, res) {
+app.post('/answer', function(req, res) {
+  var answer = req.body.answer;
   // Use mongoose to validate an answer schema and handle valid/invalid answer
-  console.log('Users Answer');
-  console.log(req.body);
+  console.log('Users Answer: ' + answer);
 });
 
 app.post('/_next', function(req, res) {
