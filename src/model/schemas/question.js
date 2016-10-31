@@ -1,4 +1,6 @@
-module.exports = {
+const mongoose = require('mongoose');
+
+var schema = {
   question: {
     type: String,
     required: true,
@@ -14,5 +16,17 @@ module.exports = {
         message: 'Not enough answers provided'
       },
       required: true,
+  },
+  correct: {
+    type: String,
+    required: true,
+    minlength: 1
   }
-}
+};
+
+var QuestionDB = mongoose.model(
+  'question',
+  new mongoose.Schema(schema)
+);
+
+module.exports = {QuestionDB};

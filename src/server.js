@@ -2,9 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const hbs = require('hbs');
 
-
-var {mongoose} = require('./model/db');
-var {Question} = require('./model/question.js');
+var QuestionMapper = require('./mapping/QuestionMapper.js');
 
 var app = express();
 
@@ -33,23 +31,9 @@ app.get('/', function(req, res) {
 
 // Handle HTTP GET requests at root '/play'
 app.get('/play', function(req, res) {
-  Question.find().then(
-    // On Succeed
-    function(questions) {
-      var {question, answers, _id} = questions[0];
-      var qData = {
-        question: question,
-        answers: answers,
-        ObjectID: _id.toString(),
-      }
-      res.render('player.hbs', qData);
-    },
-    // On Fail
-    function(err) {
-      console.log('Unable to fetch question', err);
-      res.send('Unable to render question');
-    }
-  )
+  QuestionMapper.findAny().then(function(question) {
+    res.render('player.hbs', question);
+  });
 });
 
 // Handle HTTP GET requests at root '/hub'
@@ -58,14 +42,19 @@ app.get('/hub', function(req, res) {
 });
 
 app.post('/answer', function(req, res) {
-  var answer = req.body.answer;
-  // Use mongoose to validate an answer schema and handle valid/invalid answer
-  console.log('Users Answer: ' + answer);
+  var {answer, question_id} = req.body;
+  QuestionMapper.findByID(question_id).then(function(question) {
+    res.send({correct: question.check(answer)});
+  }, function(err) {console.log(err)});
 });
 
-app.post('/_next', function(req, res) {
+app.get('/next', function(req, res) {
+  QuestionMapper.findAny().then(function(question) {
+    console.log('found next q');
+    res.render('../partials/qa.hbs', question);
+  }, function(err) {console.log(err)});
   // Respond with the next question and answer
-})
+});
 
 app.listen(3000, function() {
   console.log('Server started');

@@ -1,9 +1,15 @@
-const mongoose = require('mongoose');
-const question_schema = require('./schemas/question');
+class Question {
 
-var Question = mongoose.model(
-  'question',
-  new mongoose.Schema(question_schema)
-);
+  constructor(question, answers, correct, _id) {
+    this.question = question;
+    this.answers = answers;
+    this.correct = correct;
+    this.id = _id;
+  }
+
+  check(answer) {
+    return answer === this.correct;
+  }
+}
 
 module.exports = {Question};

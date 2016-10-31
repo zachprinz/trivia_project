@@ -1,7 +1,17 @@
-<p>{{question}}</p>
-<ul>
-  {{#each answers}}
-    <input type="radio" name="answer" value="{{../ObjectID}}">{{this}}<br>
-  {{/each}}
-</ul>
-<button type="button" id="answer_submit_button">Submit</button>
+<div class="questionBody">
+  <p>{{question}}</p>
+  <ul>
+    {{#each answers}}
+      <div>
+        <input
+          type="radio"
+          class="answer"
+          name="answer"
+          value="{{this}}"
+          data-question="{{../id}}">
+        {{this}}
+        <br>
+      </div>
+    {{/each}}
+  </ul>
+</div>
