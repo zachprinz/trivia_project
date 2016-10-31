@@ -26,19 +26,17 @@ app.use(bodyParser.json());
 
 // Handle HTTP GET requests at root '/'
 app.get('/', function(req, res) {
-  res.render('home.hbs');
+  res.render('home.hbs', {homePage: true});
 });
 
 // Handle HTTP GET requests at root '/play'
 app.get('/play', function(req, res) {
-  QuestionMapper.findAny().then(function(question) {
-    res.render('player.hbs', question);
-  });
+  res.render('player.hbs', {playPage: true});
 });
 
 // Handle HTTP GET requests at root '/hub'
 app.get('/hub', function(req, res) {
-  res.render('hub.hbs');
+  res.render('hub.hbs', {hubPage: true});
 });
 
 app.post('/answer', function(req, res) {

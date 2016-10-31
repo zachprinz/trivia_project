@@ -1,7 +1,7 @@
-.correct {
-  color: green;
+body {
+  padding-top: 70px;
 }
 
-.incorrect {
-  color: red;
+.questionBody {
+  margin: 10px, 0;
 }

@@ -13,9 +13,9 @@ function registerSubmitAnswer() {
       data: JSON.stringify(answerData),
       success: function(data) {
         if (data.correct) {
-          answer.parent().addClass("correct");
+          answer.parent().find("span").addClass("label label-success");
         } else {
-          answer.parent().addClass("incorrect");
+          answer.parent().find("span").addClass("label label-danger");
         }
         $("#answer_submit_button").prop('disabled', true);
         $("#next_question_button").prop('disabled', false);
@@ -25,13 +25,17 @@ function registerSubmitAnswer() {
   });
 }
 
+function requestNewQuestion() {
+  $(".questionBody").load("/next", function() {
+    $("#answer_submit_button").prop('disabled', true);
+    $("#next_question_button").prop('disabled', true);
+    registerSelectAnswer();
+  });
+}
+
 function registerNextQuestion() {
   $("#next_question_button").click(function() {
-    $(".questionBody").load("/next", function() {
-      $("#answer_submit_button").prop('disabled', true);
-      $("#next_question_button").prop('disabled', true);
-      registerSelectAnswer();
-    });
+    requestNewQuestion();
   });
 }
 
@@ -45,4 +49,5 @@ $(document).ready(function(){
   registerSubmitAnswer();
   registerSelectAnswer();
   registerNextQuestion();
+  requestNewQuestion();
 });

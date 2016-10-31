@@ -1,3 +1,18 @@
-<a href="/">Home</a>
-<a href="/play">Play</a>
-<a href="/hub">Hub</a>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+     <a class="navbar-brand" href="#">CS 499 Trivia</a>
+   </div>
+    <ul class="nav navbar-nav">
+      <li role="presentation" {{#if homePage}} class="active" {{/if}}>
+        <a href="/">Home</a>
+      </li>
+      <li role="presentation" {{#if playPage}} class="active" {{/if}}>
+        <a href="/play">Play</a>
+      </li>
+      <li role="presentation" {{#if hubPage}} class="active" {{/if}}>
+        <a href="/hub">Hub</a>
+      </li>
+    </ul>
+  </div>
+</nav>
