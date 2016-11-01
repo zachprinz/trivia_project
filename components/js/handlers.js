@@ -1,51 +1,53 @@
+/* eslint-env jquery */
+/* global document:true */
+
 function registerSubmitAnswer() {
-  $("#answer_submit_button").click(function() {
-    var answer = $("input[name='answer']:checked");
-    var answerData = {
-      question_id: answer.attr('data-question'),
-      answer: answer.val()
+  $('#answer_submit_button').click(() => {
+    const $answer = $('input[name="answer"]:checked');
+    const answerData = {
+      questionId: $answer.attr('data-question'),
+      answer: $answer.val(),
     };
-    console.log(answerData);
     $.ajax({
-      url: "/answer",
-      type: "POST",
-      contentType: "application/json",
+      url: '/answer',
+      type: 'POST',
+      contentType: 'application/json',
       data: JSON.stringify(answerData),
-      success: function(data) {
+      success: (data) => {
         if (data.correct) {
-          answer.parent().find("span").addClass("label label-success");
+          $answer.parent().find('span').addClass('label label-success');
         } else {
-          answer.parent().find("span").addClass("label label-danger");
+          $answer.parent().find('span').addClass('label label-danger');
         }
-        $("#answer_submit_button").prop('disabled', true);
-        $("#next_question_button").prop('disabled', false);
-        $(".answer").prop('disabled', true);
-      }
+        $('#answer_submit_button').prop('disabled', true);
+        $('#next_question_button').prop('disabled', false);
+        $('.answer').prop('disabled', true);
+      },
     });
   });
 }
 
+function registerSelectAnswer() {
+  $('.answer').click(() => {
+    $('#answer_submit_button').prop('disabled', false);
+  });
+}
+
 function requestNewQuestion() {
-  $(".questionBody").load("/next", function() {
-    $("#answer_submit_button").prop('disabled', true);
-    $("#next_question_button").prop('disabled', true);
+  $('.questionBody').load('/next', () => {
+    $('#answer_submit_button').prop('disabled', true);
+    $('#next_question_button').prop('disabled', true);
     registerSelectAnswer();
   });
 }
 
 function registerNextQuestion() {
-  $("#next_question_button").click(function() {
+  $('#next_question_button').click(() => {
     requestNewQuestion();
   });
 }
 
-function registerSelectAnswer() {
-  $(".answer").click(function() {
-    $("#answer_submit_button").prop('disabled', false);
-  });
-}
-
-$(document).ready(function(){
+$(document).ready(() => {
   registerSubmitAnswer();
   registerSelectAnswer();
   registerNextQuestion();

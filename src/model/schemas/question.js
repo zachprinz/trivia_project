@@ -1,32 +1,32 @@
-const mongoose = require('mongoose');
+const { mongoose } = require('../../mapping/db.js');
 
-var schema = {
+const schema = {
   question: {
     type: String,
     required: true,
     minlength: 1,
-    trim: true
+    trim: true,
   },
   answers: {
-      type: [String],
-      validate: {
-        validator: function(v) {
-          return v.length > 1;
-        },
-        message: 'Not enough answers provided'
+    type: [String],
+    validate: {
+      validator(v) {
+        return v.length > 1;
       },
-      required: true,
+      message: 'No answers provided',
+    },
+    required: true,
   },
   correct: {
     type: String,
     required: true,
-    minlength: 1
-  }
+    minlength: 1,
+  },
 };
 
-var QuestionDB = mongoose.model(
+const QuestionDB = mongoose.model(
   'question',
   new mongoose.Schema(schema)
 );
 
-module.exports = {QuestionDB};
+module.exports = { QuestionDB };
