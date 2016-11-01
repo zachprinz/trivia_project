@@ -4,11 +4,11 @@
     {{#each answers}}
       <div>
         <input
-          type="radio"
           class="answer"
+          data-question="{{../id}}"
           name="answer"
-          value="{{this}}"
-          data-question="{{../id}}">
+          type="radio"
+          value="{{this}}">
         <span class="answerLabel">{{this}}</span>
         <br>
       </div>

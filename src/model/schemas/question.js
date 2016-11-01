@@ -1,13 +1,15 @@
 const { mongoose } = require('../../mapping/db.js');
 
+// Definition of the fields required in the QuestionDB entries
 const schema = {
   question: {
-    type: String,
-    required: true,
     minlength: 1,
+    required: true,
     trim: true,
+    type: String,
   },
   answers: {
+    required: true,
     type: [String],
     validate: {
       validator(v) {
@@ -15,15 +17,15 @@ const schema = {
       },
       message: 'No answers provided',
     },
-    required: true,
   },
   correct: {
-    type: String,
-    required: true,
     minlength: 1,
+    required: true,
+    type: String,
   },
 };
 
+// Construct a Model object for querying/writing
 const QuestionDB = mongoose.model(
   'question',
   new mongoose.Schema(schema)

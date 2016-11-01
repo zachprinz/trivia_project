@@ -1,5 +1,5 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 const hbs = require('hbs');
 const path = require('path');
 
@@ -40,23 +40,40 @@ app.get('/hub', (req, res) => {
   res.render('hub.hbs', { isHubPage: true });
 });
 
+/**
+ * Handle HTTP POST Requests to /answer endpoint
+ * Called when the user submits an answer for grading
+ * Returns to the user a boolean representing the correctness of the answer
+ */
 app.post('/answer', (req, res) => {
+  // Use ES6 destructuring to pull passed data from the request body
   const { answer, questionId } = req.body;
+
+  // Find the question object the user is answering so we can check it
   QuestionMapper.findByID(questionId).then((question) => {
+    // Return a result containing json data with the result (grade)
     res.send({ correct: question.check(answer) });
   }).catch((err) => {
     console.log(err);
   });
 });
 
+/**
+ * Handle HTTP GET Requests to the /next endpoint
+ * Requested when the user needs a new question to be displayed
+ * Returns to the user a HTML partial showing the new question
+ */
 app.get('/next', (req, res) => {
+  // Find a random question to send to the user
   QuestionMapper.findAny().then((question) => {
+    // Send the user a rendered partial showing the selected question
     res.render('../partials/qa.hbs', question);
   }).catch((err) => {
     console.log(err);
   });
 });
 
+// Start the server listening on port 3000
 app.listen(3000, () => {
   console.log('Server started');
 });
