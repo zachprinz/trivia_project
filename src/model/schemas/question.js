@@ -1,32 +1,34 @@
-const mongoose = require('mongoose');
+const { mongoose } = require('../../mapping/db.js');
 
-var schema = {
+// Definition of the fields required in the QuestionDB entries
+const schema = {
   question: {
-    type: String,
-    required: true,
     minlength: 1,
-    trim: true
+    required: true,
+    trim: true,
+    type: String,
   },
   answers: {
-      type: [String],
-      validate: {
-        validator: function(v) {
-          return v.length > 1;
-        },
-        message: 'Not enough answers provided'
+    required: true,
+    type: [String],
+    validate: {
+      validator(v) {
+        return v.length > 1;
       },
-      required: true,
+      message: 'No answers provided',
+    },
   },
   correct: {
-    type: String,
+    minlength: 1,
     required: true,
-    minlength: 1
-  }
+    type: String,
+  },
 };
 
-var QuestionDB = mongoose.model(
+// Construct a Model object for querying/writing
+const QuestionDB = mongoose.model(
   'question',
   new mongoose.Schema(schema)
 );
 
-module.exports = {QuestionDB};
+module.exports = { QuestionDB };

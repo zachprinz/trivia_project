@@ -1,51 +1,54 @@
-const {mongoose} = require('./db.js');
 const ObjectId = require('mongoose').Types.ObjectId;
 
-
-var {QuestionDB} = require('../model/schemas/question.js');
-var {Question} = require('../model/question.js');
-
-function getRandomIndex(max) {
-  return Math.floor(Math.random() * (max - 1));
-}
+const { QuestionDB } = require('../model/schemas/question.js');
+const { Question } = require('../model/question.js');
 
 module.exports = {
-  findByID: function(id, callback) {
-    if (typeof id === "string") {
-      id = new ObjectId(id);
-    }
-    return new Promise(function(resolve, reject) {
-      QuestionDB.find({_id: id}).then(
-        questions => {
-          var {question, answers, correct, _id} = questions[0];
-          var q = new Question(question, answers, correct, _id);
-          resolve(q);
-        },
-        err => {
-          console.log(err);
-          var q = new Question();
-          resolve(q);
-        }
-      );
+  /**
+   * Query the DB for a question with a specific ID
+   * @param  {ObjectId | string} id The ID to search for
+   * @return {Promise(Question)} A Promise to be passed any found Question
+   */
+  findByID(id) {
+    // If the id param passed is a string we need to convert it to an ObjectId
+    const idObj = typeof id === 'string'
+      ? id
+      : new ObjectId(id);
+    const query = { _id: idObj };
+    return new Promise((resolve, reject) => {
+      QuestionDB.find(query).then((questions) => {
+        // TODO handle empty question result array
+        // Use ES6 destructuring to pull off field from the JSON result
+        const { question, answers, correct, _id } = questions[0];
+        const q = new Question(question, answers, correct, _id);
+        resolve(q);
+      }).catch((err) => {
+        console.log(err);
+        const q = new Question();
+        resolve(q);
+      });
     });
   },
 
-  findAny: function(callback) {
-    return new Promise(function(resolve, reject) {
-      QuestionDB.find().then(
-        questions => {
-          var index = getRandomIndex(questions.length);
-          console.log('index: ' + index);
-          var {question, answers, correct, _id} = questions[index];
-          var q = new Question(question, answers, correct, _id);
-          resolve(q);
-        },
-        err => {
-          console.log(err);
-          var q = new Question();
-          resolve(q);
-        }
-      );
+  /**
+   * Query the DB for a random question
+   * @return {Promise(Question)} A Promise to be passed a random Question
+   */
+  findAny() {
+    return new Promise((resolve, reject) => {
+      QuestionDB.find().then((questions) => {
+        // findAny returns a random question, so compute a random index
+        const index = Math.floor(Math.random() * questions.length);
+
+        // Use ES6 destructuring to pull off field from the JSON result
+        const { question, answers, correct, _id } = questions[index];
+        const q = new Question(question, answers, correct, _id);
+        resolve(q);
+      }).catch((err) => {
+        console.log(err);
+        const q = new Question();
+        resolve(q);
+      });
     });
-  }
-}
+  },
+};

@@ -4,13 +4,13 @@
      <a class="navbar-brand" href="#">CS 499 Trivia</a>
    </div>
     <ul class="nav navbar-nav">
-      <li role="presentation" {{#if homePage}} class="active" {{/if}}>
+      <li role="presentation" {{#if isHomePage}} class="active" {{/if}}>
         <a href="/">Home</a>
       </li>
-      <li role="presentation" {{#if playPage}} class="active" {{/if}}>
+      <li role="presentation" {{#if isPlayPage}} class="active" {{/if}}>
         <a href="/play">Play</a>
       </li>
-      <li role="presentation" {{#if hubPage}} class="active" {{/if}}>
+      <li role="presentation" {{#if isHubPage}} class="active" {{/if}}>
         <a href="/hub">Hub</a>
       </li>
     </ul>
