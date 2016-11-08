@@ -4,7 +4,11 @@
   "description": "CS 499 Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nf start"
+  },
+  "engines": {
+    "node": "7.0.0"
   },
   "repository": {
     "type": "git",
@@ -20,7 +24,6 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "hbs": "^4.0.1",
-    "mongodb": "^2.2.11",
     "mongoose": "^4.6.5",
     "mustache": "^2.2.1"
   },
