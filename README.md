@@ -1,27 +1,10 @@
 # CS 499 Project
 ## Setup Instructions:
-#### Database Setup
-- install roboMongo (optional GUI for mongoDB editing)
-- install mongoDB
-- run mongod --dbpath ~/Documents/mongo-data (change file path if neccesary)
-- connect to mongoDB with roboMongo (default port)
-- Create Database with name 'trivia_project'
-- Create Collection with name 'questions'
-- Create Document with the following content (question)
+#### Live App
+https://cs-499-trivia.herokuapp.com/
 
-    ```json
-    {
-        "_id" : ObjectId("58164d9c83765378705b1f73"),
-        "question" : "Inside which HTML element do we put the JavaScript?",
-        "correct" : "<script>",
-        "answers" : [
-            "<javascript>",
-            "<js>",
-            "<scripting>",
-            "<script>"
-        ]
-    }
-    ```
+#### Database Setup
+- Database now hosted on heroku server
 
 #### Node Setup
 - install node.js v^7.0.0
