@@ -6,6 +6,7 @@ const path = require('path');
 const QuestionMapper = require('./mapping/QuestionMapper.js');
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Set the directory where partials will be found
 hbs.registerPartials(path.join(__dirname, '/../components/partials'));
@@ -74,6 +75,6 @@ app.get('/next', (req, res) => {
 });
 
 // Start the server listening on port 3000
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log('Server started');
 });
