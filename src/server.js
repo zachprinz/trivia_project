@@ -5,8 +5,7 @@ const path = require('path');
 const socketIO = require('socket.io');
 const http = require('http');
 
-const PlayerService = require('./service/PlayerService.js');
-const RoomService = require('./service/RoomService.js');
+const PlayerController = require('./controller/PlayerController.js');
 
 const PUBLIC_PATH = path.join(__dirname, '../components');
 const PORT = process.env.PORT || 3000;
@@ -49,42 +48,9 @@ app.get('/hub', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  const player = PlayerService.createNewPlayer();
-
-  player.emitter.on('roomJoined', (data) => {
-    socket.emit('enteredRoom', data);
-  });
-
-  player.emitter.on('roomJoinFailed', (data) => {
-    socket.emit('roomJoinFailed', data);
-  });
-
-  player.emitter.on('answerGraded', (answer) => {
-    socket.emit('answerGraded', answer.toJSON());
-  });
-
-  player.emitter.on('roundBegin', () => {
-    socket.emit('roundBegin', player.getRoom().getCurrentQuestion().toJSON());
-  });
-
-  player.emitter.on('roundEnd', () => {
-    socket.emit('roundEnd');
-  });
-
-  socket.on('joinRoom', (data) => {
-    RoomService.addPlayerToRoomByID(player, data.roomID);
-  });
-
-  socket.on('submitAnswer', (data) => {
-    PlayerService.submitAnswer(player, data);
-  });
-
-  socket.on('disconnect', () => {
-    PlayerService.removePlayer(player);
-  });
-
-  // Ensure all event listeners are registered before initializing
-  PlayerService.initPlayer(player);
+  if (true /* isPlayer */) {
+    PlayerController.listen(socket);
+  }
 });
 
 // Start the server listening on port 3000

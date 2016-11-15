@@ -6,7 +6,7 @@ module.exports = {
   },
 
   addPlayerToRoomByID(player, roomID) {
-    if (Room.roomExists(roomID)) {
+    if (Room.findByID(roomID) !== undefined) {
       Room.findByID(roomID).addPlayer(player);
       player.setRoom(Room.findByID(roomID));
       return true;

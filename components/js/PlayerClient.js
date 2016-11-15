@@ -21,14 +21,17 @@ socket.on('disconnect', () => {
   console.log('Disconnected');
 });
 
-socket.on('enteredRoom', (data) => {
-  $('#room_id_label').text(data.roomID);
+socket.on('roomJoined', (data) => {
+  $('#room_id_label').text(data.id);
   $('#join_room_button').blur();
   $('#join_room_button').prop('disabled', true);
 });
 
+socket.on('roomJoinFailed', (data) => {
+  console.log('failed to find roomss');
+});
+
 socket.on('roundBegin', (data) => {
-  console.log('round began');
   $('#answer_list').empty();
   $('#question_body').empty();
   $('#question_body').text(data.question);
@@ -49,10 +52,8 @@ socket.on('roundEnd', (data) => {
 });
 
 socket.on('answerGraded', (data) => {
-  console.log(data);
   // Upon completion, restyle the page to reflect the result
   const $answer = $('input[name="answer"]:checked');
-  console.log($answer);
   if (data.correct) {
     $answer.parent().find('span').addClass('label label-success');
   } else {

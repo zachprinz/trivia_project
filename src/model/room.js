@@ -26,7 +26,7 @@ class Room {
   }
 
   static roomExists(id) {
-    return !!(rooms.get(id));
+    return Room.findByID(id) !== undefined;
   }
 
   endRound() {
@@ -58,6 +58,12 @@ class Room {
 
   getID() {
     return this.id;
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+    };
   }
 
 }

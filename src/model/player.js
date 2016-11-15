@@ -37,7 +37,7 @@ class Player {
       this.room.removePlayer(this);
     }
     this.room = room;
-    this.emitter.emit('roomEntered', room);
+    this.emitter.emit('roomJoined', room);
   }
 }
 
