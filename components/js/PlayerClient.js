@@ -3,9 +3,12 @@
 
 const socket = io({ test: 'test' });
 
-const answerItem = $('<div></div>');
-answerItem.addClass('answer active');
-answerItem.prop('name', 'answer');
+const answerItem = $([
+  '<div class="answer active" name="answer">',
+  ' <div class="answer-select"></div>',
+  ' <span></span>',
+  '</div>',
+].join('\n'));
 
 socket.on('connect', () => {
   console.log('Connected');
@@ -25,25 +28,35 @@ socket.on('roomJoinFailed', (data) => {
   console.log('failed to find roomss');
 });
 
+function updateEventTime(time) {
+  $('#eventLabelTime').text(time / 1000);
+  if (time > 1000) {
+    setTimeout(updateEventTime.bind(this, time - 1000), 1000);
+  }
+}
+
 socket.on('roundBegin', (data) => {
   $('#answer_list').empty();
   $('#question_body').empty();
   $('#question_body').text(data.question);
   const answers = data.answers;
   answers.forEach((answer) => {
-    const answerBody = answerItem.clone();
+    const answerBody = answerItem.clone(true);
     answerBody.val(answer);
-    answerBody.text(answer);
+    answerBody.find('span').text(answer);
     $('#answer_list').append(answerBody);
   });
   $('#answer_list :first-child').addClass('selected');
   $('#answer_submit_button').prop('disabled', true);
   $('#next_question_button').prop('disabled', true);
+  $('#eventLabelEvent').text('Round ending in: ');
+  updateEventTime(data.time);
   registerSelectAnswer();
 });
 
 socket.on('roundEnd', (data) => {
-  console.log('Round has ended, new round starting in 2 seconds.');
+  $('#eventLabelEvent').text('New round beginning in: ');
+  updateEventTime(data.time);
 });
 
 socket.on('answerGraded', (data) => {
@@ -82,8 +95,10 @@ function registerSubmitAnswer() {
  * On answer selection, enable the submit button
  */
 function registerSelectAnswer() {
+  $('.answer :first-child').each(function () {
+    $(this).attr('maxWidth', $(this).parent().outerWidth(true) + 'px');
+  });
   $('.answer').click(function () {
-    console.log('selected answer');
     $('.answer.deselected').removeClass('deselected');
     $('.answer.selected').addClass('deselected');
     $('.answer.selected.deselected').removeClass('selected');

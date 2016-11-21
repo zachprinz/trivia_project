@@ -13,12 +13,18 @@
         <div class="questionBody">
           {{> qa}}
         </div>
-        <button id="answer_submit_button"
-          type="button"
-          class="btn-primary"
-          disabled="true">
-          Submit
-        </button>
+        <div class="flex split">
+          <button id="answer_submit_button"
+            type="button"
+            class="btn-primary"
+            disabled="true">
+            Submit
+          </button>
+          <div class="eventlabel nav-display">
+            <span id="eventLabelEvent"></span>
+            <span id="eventLabelTime"></span>
+          </div>
+        </div>
       </div>
     </div>
   </body>

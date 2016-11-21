@@ -51,3 +51,27 @@ i {
   margin-top: 0;
   text-indent: 50px;
 }
+
+.eventlabel {
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-shrink: 1;
+}
+
+#eventLabelEvent {
+  white-space: pre;
+}
+
+#eventLabelTime {
+  white-space: pre;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.split {
+  justify-content: space-between;
+}

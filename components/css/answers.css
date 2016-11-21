@@ -17,8 +17,7 @@
   position: relative;
 }
 
-.answer:before {
-  content: "";
+.answer .answer-select {
   height: 100%;
   background-color: #FC6C37;
   position: absolute;
@@ -29,24 +28,26 @@
   z-index: -1;
 }
 
-.answer.incorrect:before {
-  background-color: #FC3737 !important;
-  width: 250px !important;
+.answer.selected.incorrect  .answer-select {
+  background-color: #FC3737;
+  width: 100%;
 }
 
-.answer.correct:before {
-  background-color: #36DC75 !important;
-  width: 250px !important;
+.answer.selected.correct  .answer-select {
+  background-color: #36DC75;
+  width: 100%;
 }
 
-.answer.selected:before {
-    width: 25px;
+.answer.selected  .answer-select {
+  width: 25px;
 }
 
-.answer.active:not(.selected):hover:before {
+.answer.active:not(.selected):hover .answer-select{
   width: 5px;
 }
 
 .answer.selected {
+  /* Padded area will be highlighted on grade. */
   padding-left: 30px;
+  padding-right: 30px;
 }

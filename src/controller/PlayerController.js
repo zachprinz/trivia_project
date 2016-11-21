@@ -17,12 +17,12 @@ module.exports = {
       socket.emit('answerGraded', answer.toJSON());
     });
 
-    player.emitter.on('roundBegin', () => {
-      socket.emit('roundBegin', player.getRoom().getCurrentQuestion().toJSON());
+    player.emitter.on('roundBegin', (data) => {
+      socket.emit('roundBegin', Object.assign(player.getRoom().getCurrentQuestion().toJSON(), data));
     });
 
-    player.emitter.on('roundEnd', () => {
-      socket.emit('roundEnd');
+    player.emitter.on('roundEnd', (time) => {
+      socket.emit('roundEnd', { 'time': time });
     });
 
     socket.on('joinRoom', (data) => {

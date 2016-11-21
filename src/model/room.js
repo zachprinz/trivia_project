@@ -4,6 +4,9 @@ const QuestionService = require('../service/QuestionService.js');
  */
 const rooms = new Map();
 
+const ROUND_TIME = 6000;
+const ROUND_BREAK_TIME = 2000;
+
 const getNewRoomID = (() => {
   let curID = 0;
   return () => {
@@ -30,18 +33,18 @@ class Room {
   }
 
   endRound() {
-    setTimeout(QuestionService.transitionRound.bind(undefined, this), 2000);
+    setTimeout(QuestionService.transitionRound.bind(undefined, this), ROUND_BREAK_TIME);
     for (let [id, player] of this.players) {
-      player.emitter.emit('roundEnd');
+      player.emitter.emit('roundEnd', ROUND_BREAK_TIME);
     }
   }
 
   beginRound(question) {
     this.curQuestion = question;
     for (let [id, player] of this.players) {
-      player.emitter.emit('roundBegin');
+      player.emitter.emit('roundBegin', { time: ROUND_TIME });
     }
-    setTimeout(this.endRound.bind(this), 6000);
+    setTimeout(this.endRound.bind(this), ROUND_TIME);
   }
 
   addPlayer(player) {
