@@ -39,6 +39,12 @@ class Player {
     this.room = room;
     this.emitter.emit('roomJoined', room);
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+    };
+  }
 }
 
 module.exports = Player;
