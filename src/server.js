@@ -5,9 +5,9 @@ const path = require('path');
 const socketIO = require('socket.io');
 const http = require('http');
 
-const PlayerController = require('./src/controller/PlayerController.js');
+const PlayerController = require('./controller/PlayerController.js');
 
-const PUBLIC_PATH = path.join(__dirname, 'components');
+const PUBLIC_PATH = path.join(__dirname, '../components');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
