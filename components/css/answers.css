@@ -5,7 +5,7 @@
 }
 
 .answer {
-  cursor: pointer;
+  cursor: default;
   padding: 4px 0 4px 10px;
   transition: padding 0.2s;
   margin-bottom: 5px;
@@ -15,6 +15,10 @@
   user-select: none;
   display: inline-block;
   position: relative;
+}
+
+.answer.active {
+  cursor: pointer;
 }
 
 .answer .answer-select {

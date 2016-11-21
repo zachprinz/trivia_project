@@ -15,4 +15,13 @@ module.exports = {
     return false;
   },
 
+  attachHubToRoomByID(emitter, roomID) {
+    if (Room.findByID(roomID) !== undefined && !Room.findByID(roomID).hasHub()) {
+      Room.findByID(roomID).attachHub(emitter);
+      return true;
+    }
+    emitter.emit('roomJoinFailed', {});
+    return false;
+  }
+
 };

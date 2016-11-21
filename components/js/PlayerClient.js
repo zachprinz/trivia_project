@@ -1,7 +1,7 @@
 /* eslint-env jquery */
 /* global document:true */
 
-const socket = io({ test: 'test' });
+const socket = io();
 
 const answerItem = $([
   '<div class="answer active" name="answer">',
@@ -37,8 +37,7 @@ function updateEventTime(time) {
 
 socket.on('roundBegin', (data) => {
   $('#answer_list').empty();
-  $('#question_body').empty();
-  $('#question_body').text(data.question);
+  $('.question-text').text(data.question);
   const answers = data.answers;
   answers.forEach((answer) => {
     const answerBody = answerItem.clone(true);
@@ -56,6 +55,11 @@ socket.on('roundBegin', (data) => {
 
 socket.on('roundEnd', (data) => {
   $('#eventLabelEvent').text('New round beginning in: ');
+  $('.answer.active').each(function () {
+    $(this).removeClass('active');
+    $(this).unbind('click');
+  });
+  $('.answer.selected').removeClass('.selected');
   updateEventTime(data.time);
 });
 

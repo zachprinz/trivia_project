@@ -87,6 +87,9 @@
   color: #E2DFF3;
   font-size:18px;
   text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
 }
 
 .navlink:hover {
