@@ -1,0 +1,102 @@
+.nav {
+  background-color: #448DE5;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+  color: #E2DFF3;
+}
+
+.nav-display {
+  margin-right: 12px;
+  height: 29px;
+  padding: 0 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FC6C37;
+  white-space: pre;
+  border-radius: 4px;
+}
+
+.nav-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.nav-group {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-tab {
+  margin-left: 20px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 42px;
+  width: 55px;
+  padding: 0 5px;
+  position: relative;
+}
+
+.nav-tab > i ,
+.nav-tab > .nav-link {
+  padding-top: 5px;
+}
+
+.nav-tab:after {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0px;
+  height: 4px;
+  background-color: #FC6C37;
+  content: "";
+  transition: width 0.2s;
+}
+
+.nav-tab:hover {
+  color: #E2DFF3;
+}
+.nav-tab:hover:after {
+  width: 100%;
+}
+
+.nav-tab.active {
+  border-bottom-style: solid;
+  border-bottom-color: #FC6C37;
+  border-bottom-width: 4px;
+}
+
+.nav-title {
+  font-size: 25px;
+  line-height: 20px;
+  font-family: 'Cantora One', sans-serif;
+  color: #E2DFF3;
+  cursor: default;
+  margin-right: 12px;
+}
+
+.nav-link {
+  text-shadow: none;
+  color: #E2DFF3;
+  font-size:18px;
+  text-decoration: none;
+}
+
+.navlink:hover {
+  background-color: #EAEAEA;
+}
+
+.questionBody {
+  margin: 10px, 0;
+}
+
+.row {
+  margin-bottom: 10px;
+}

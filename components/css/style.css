@@ -1,7 +1,53 @@
 body {
-  padding-top: 70px;
+  background-color: #EAEAEA;
+  color: #050401;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.questionBody {
-  margin: 10px, 0;
+button {
+  height: 29px;
+  border: none;
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+input {
+  height: 29px;
+  background-color: #eaeaea;
+  border: none;
+  padding: 0 3px;
+  color: #050401;
+  border-radius: 4px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+i {
+  margin-right: 3px;
+}
+
+.fadeable {
+  display: none;
+}
+
+.btn-primary {
+  background-color: #303036;
+  color: #EAEAEA;
+}
+
+.input-small {
+  width: 125px;
+}
+
+.banner {
+  font-family: 'Cantora One', sans-serif;
+  font-size: 3em;
+  color: #050401;
+}
+
+.game-description {
+  margin-top: 0;
+  text-indent: 50px;
 }

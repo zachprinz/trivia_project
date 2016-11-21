@@ -4,16 +4,22 @@
     <meta charset="utf-8">
     <title>CS 499 Trivia</title>
     {{> includes}}
-    <script type="text/javascript" src="/js/handlers.js"></script>
+    <script type="text/javascript" src="/js/PlayerClient.js"></script>
   </head>
   <body>
     {{> nav}}
-    <div class="container">
-      <div class="questionBody">
-        <!-- Empty -->
+    <div class="container fadeable">
+      <div class="row">
+        <div class="questionBody">
+          {{> qa}}
+        </div>
+        <button id="answer_submit_button"
+          type="button"
+          class="btn-primary"
+          disabled="true">
+          Submit
+        </button>
       </div>
-      <button type="button" id="answer_submit_button" disabled="true">Submit</button>
-      <button type="button" id="next_question_button" disabled="true">Next</button>
     </div>
   </body>
 </html>

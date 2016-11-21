@@ -25,6 +25,13 @@ class Question {
   check(answer) {
     return answer === this.correct;
   }
+
+  toJSON() {
+    return {
+      question: this.question,
+      answers: this.answers,
+    };
+  }
 }
 
 module.exports = { Question };
