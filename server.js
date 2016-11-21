@@ -5,9 +5,9 @@ const path = require('path');
 const socketIO = require('socket.io');
 const http = require('http');
 
-const PlayerController = require('./controller/PlayerController.js');
+const PlayerController = require('./src/controller/PlayerController.js');
 
-const PUBLIC_PATH = path.join(__dirname, '../components');
+const PUBLIC_PATH = path.join(__dirname, 'components');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -48,9 +48,12 @@ app.get('/hub', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  if (true /* isPlayer */) {
+  socket.on('registerAsPlayer', (data) => {
     PlayerController.listen(socket);
-  }
+  });
+  socket.on('registerAsHub', (data) => {
+    HubController.listen(socket);
+  });
 });
 
 // Start the server listening on port 3000

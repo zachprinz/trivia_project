@@ -1,19 +1,22 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-     <a class="navbar-brand" href="#">CS 499 Trivia</a>
-   </div>
-    <ul class="nav navbar-nav">
-      <li role="presentation" {{#if isHomePage}} class="active" {{/if}}>
-        <a href="/">Home</a>
-      </li>
-      <li role="presentation" {{#if isPlayPage}} class="active" {{/if}}>
-        <a href="/play">Play</a>
-      </li>
-      <li role="presentation" {{#if isHubPage}} class="active" {{/if}}>
-        <a href="/hub">Hub</a>
-      </li>
-    </ul>
-    {{> room}}
+<div class="nav">
+  <div class="nav-content container">
+    <div class="nav-group">
+      <div class="nav-title">CS 499 Trivia</div>
+      <div role="presentation" class="nav-tab {{#if isHomePage}}active{{/if}}">
+        <i class="fa fa-home fa-2" aria-hidden="true"></i>
+        <a href="/" class="nav-link">Home</a>
+      </div>
+      <div role="presentation" class="nav-tab {{#if isPlayPage}}active{{/if}}">
+        <i class="fa fa-graduation-cap fa-2" aria-hidden="true"></i>
+        <a href="/play" class="nav-link">Play</a>
+      </div>
+      <div role="presentation" class="nav-tab {{#if isHubPage}}active{{/if}}">
+        <i class="fa fa-bar-chart fa-2" aria-hidden="true"></i>
+        <a href="/hub" class="nav-link">Hub</a>
+      </div>
+    </div>
+    <div class="nav-group">
+      {{> room}}
+    </div>
   </div>
-</nav>
+</div>

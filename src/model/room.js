@@ -41,7 +41,7 @@ class Room {
     for (let [id, player] of this.players) {
       player.emitter.emit('roundBegin');
     }
-    setTimeout(this.endRound.bind(this), 5000);
+    setTimeout(this.endRound.bind(this), 6000);
   }
 
   addPlayer(player) {
