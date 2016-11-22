@@ -48,6 +48,10 @@ app.get('/hub', (req, res) => {
   res.render('hub.hbs', { isHubPage: true });
 });
 
+app.get('/end', (req, res) => {
+  res.render('end.hbs');
+});
+
 io.on('connection', (socket) => {
   socket.on('registerAsPlayer', (data) => {
     PlayerController.listen(socket);

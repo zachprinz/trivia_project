@@ -7,6 +7,7 @@ const rooms = new Map();
 
 const ROUND_TIME = 6000;
 const ROUND_BREAK_TIME = 2000;
+const ROUND_MAX = 5;
 
 const getNewRoomID = (() => {
   let curID = 0;
@@ -25,6 +26,7 @@ class Room {
     rooms.set(this.id, this);
     this.emitter = new EventEmitter();
     QuestionService.transitionRound(this);
+    this.roundCount = 0;
   }
 
   static findByID(id) {
@@ -36,11 +38,23 @@ class Room {
   }
 
   endRound() {
-    setTimeout(QuestionService.transitionRound.bind(undefined, this), ROUND_BREAK_TIME);
-    for (let [id, player] of this.players) {
-      player.emitter.emit('roundEnd', ROUND_BREAK_TIME);
+    this.roundCount++;
+    if (this.roundCount === ROUND_MAX) {
+      this.endGame();
+    } else {
+      setTimeout(QuestionService.transitionRound.bind(undefined, this), ROUND_BREAK_TIME);
+      for (let [id, player] of this.players) {
+        player.emitter.emit('roundEnd', ROUND_BREAK_TIME);
+      }
+      this.emitter.emit('roundEnd', ROUND_BREAK_TIME);
     }
-    this.emitter.emit('roundEnd', ROUND_BREAK_TIME);
+  }
+
+  endGame() {
+    for (let [id, player] of this.players) {
+      player.emitter.emit('endGame');
+      this.removePlayer(player);
+    }
   }
 
   beginRound(question) {
