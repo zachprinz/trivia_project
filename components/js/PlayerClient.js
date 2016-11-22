@@ -18,10 +18,16 @@ socket.on('disconnect', () => {
   console.log('Disconnected');
 });
 
+socket.on('endGame', () => {
+  window.location.replace('/end');
+});
+
 socket.on('roomJoined', (data) => {
   $('#room_id_label').text(data.id);
   $('#join_room_button').blur();
   $('#join_room_button').prop('disabled', true);
+  $('#eventLabelEvent').text('Waiting to leave room... ');
+  //$('#eventLabelTime').text(data.id);
 });
 
 socket.on('roomJoinFailed', (data) => {

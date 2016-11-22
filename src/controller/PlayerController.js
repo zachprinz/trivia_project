@@ -25,6 +25,10 @@ module.exports = {
       socket.emit('roundEnd', { 'time': time });
     });
 
+    player.emitter.on('endGame', () => {
+      socket.emit('endGame');
+    });
+
     socket.on('joinRoom', (data) => {
       RoomService.addPlayerToRoomByID(player, parseInt(data.roomID, 10));
     });
