@@ -2,18 +2,21 @@
   <div class="nav-content container">
     <div class="nav-group">
       <div class="nav-title">CS 499 Trivia</div>
+
       <div role="presentation" class="nav-tab {{#if isHomePage}}active{{/if}}">
         <a href="/" class="nav-link">
           <i class="fa fa-home inline" aria-hidden="true"></i>
           <span>Home</span>
         </a>
       </div>
+
       <div role="presentation" class="nav-tab {{#if isPlayPage}}active{{/if}}">
         <a href="/play" class="nav-link">
           <i class="fa fa-graduation-cap inline" aria-hidden="true"></i>
           <span>Play</span>
         </a>
       </div>
+
       <div role="presentation" class="nav-tab {{#if isHubPage}}active{{/if}}">
         <a href="/hub" class="nav-link">
           <i class="fa fa-bar-chart inline" aria-hidden="true"></i>
@@ -21,8 +24,34 @@
         </a>
       </div>
     </div>
+
     <div class="nav-group">
       {{> room}}
     </div>
+
+    <div class="nav-group">
+      <div role="presentation">
+        <!-- <a href="/" class="nav-link-menu-icon">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+          <span></span>
+        </a> -->
+        <div class="nav-link-menu-icon">
+          <i class="fa fa-bars" aria-hidden="true" onclick="showDropdown()"></i>
+          <span></span>
+
+        </div>
+        <ul class="sub-menu" id="my-sub-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/play">Play</a></li>
+          <li><a href="/hub">Hub</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+function showDropdown(){
+  document.getElementById("my-sub-menu").classList.toggle("show");
+}
+</script>
