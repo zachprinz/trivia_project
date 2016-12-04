@@ -20,7 +20,14 @@
           <span>Hub</span>
         </a>
       </div>
+        <div role="presentation" class="nav-tab {{#if isAdminPage}}active{{/if}}">
+            <a href="/admin" class="nav-link">
+                <i class="fa fa-sliders inline" aria-hidden="true"></i>
+                <span>Admin</span>
+            </a>
+        </div>
     </div>
+
     <div class="nav-group">
       {{> room}}
     </div>

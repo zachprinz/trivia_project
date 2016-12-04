@@ -48,6 +48,12 @@ app.get('/hub', (req, res) => {
   res.render('hub.hbs', { isHubPage: true });
 });
 
+// Handle HTTP GET requests at root '/admin.hbs'
+app.get('/admin', (req, res) => {
+  // Render the hub template with the isHubPage bool true
+  res.render('admin.hbs', { isAdminPage: true });
+});
+
 app.get('/end', (req, res) => {
   res.render('end.hbs');
 });

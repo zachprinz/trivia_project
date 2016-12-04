@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CS 499 Trivia</title>
+    {{> includes}}
+</head>
+<body>
+{{> nav}}
+<div class="container fadeable">
+    <div class="row">
+        <h1 class="banner" align="center">Admin Functions</h1>
+    </div>
+    <div >
+        <form>
+            Please set the number of rounds:
+            <input type="number" name="rounds"
+                   min="0" max="100"  value="5">
+            <input type="submit">
+        </form>
+    </div>
+
+</div>
+</body>
+</html>
