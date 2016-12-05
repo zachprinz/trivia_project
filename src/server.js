@@ -7,6 +7,7 @@ const http = require('http');
 
 const PlayerController = require('./controller/PlayerController.js');
 const HubController = require('./controller/HubController.js');
+const AdminController = require('./controller/AdminController.js');
 
 const PUBLIC_PATH = path.join(__dirname, '../components');
 const PORT = process.env.PORT || 3000;
@@ -64,6 +65,9 @@ io.on('connection', (socket) => {
   });
   socket.on('registerAsHub', (data) => {
     HubController.listen(socket);
+  });
+  socket.on('registerAsAdmin', (data) => {
+    AdminController.listen(socket);
   });
 });
 

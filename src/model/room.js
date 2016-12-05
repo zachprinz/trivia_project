@@ -38,10 +38,11 @@ class Room {
     return Room.findByID(id) !== undefined;
   }
 
-  setRoundMax(roundMax){
+  static setRoundMax(roundMax){
     if(roundMax < this.roundCount){
       this.roundMax = roundMax;
     }
+    console.log("In the room model: " + roundMax);
   }
 
   endRound() {

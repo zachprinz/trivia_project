@@ -22,6 +22,11 @@ module.exports = {
     }
     emitter.emit('roomJoinFailed', {});
     return false;
+  },
+
+  adminChangeRoundMax(rounds){
+    console.log("In the service: " + rounds);
+    Room.setRoundMax(rounds)
   }
 
 };
