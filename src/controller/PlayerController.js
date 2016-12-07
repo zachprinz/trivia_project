@@ -1,71 +1,65 @@
-
-// Importing services to be used by the controller
+// Assign the player and room services to constant variables for use in the class
 const PlayerService = require('../service/PlayerService.js');
 const RoomService = require('../service/RoomService.js');
 
-// Exporting the code within braces to be visible by the entire application
+// Export the module so that it's visible to the rest of the application
 module.exports = {
   // Listen on the socket are using from the playerClient on the front-end
   listen(socket) {
-    // Create a new player object
+    // Create a new player by calling the PlayerService
     const player = PlayerService.createNewPlayer();
 
-    // Use the emitter declared in the player class to listen for events with a 'roomJoined' message,
-    // and a room object passed in as data.
+    // Listen for roomJoined events
     player.emitter.on('roomJoined', (room) => {
-      // Emit an event with the same roomJoined message and the room object in a JSON form
+      // Emit a roomJoined event with the room object as a JSON
       socket.emit('roomJoined', room.toJSON());
     });
 
-    // Use the emitter declared in the player class to listen for events with a 'roomFailed' message,
-    // and a data object passed in as data.
+    // Listen for roomJoinFailed messages
     player.emitter.on('roomJoinFailed', (data) => {
-      // Emit an event with the same roomJoinFailed message and the data object
+      // Emit a roomJoinFailed message with the data object attached
       socket.emit('roomJoinFailed', data);
     });
 
-    // Use the emitter declared in the player class to listen for events with a 'answerGraded' message,
-    // and a answer object passed in as data.
+    // Listen for answerGraded events
     player.emitter.on('answerGraded', (answer) => {
-      // Emit an event with the same answerGraded message and the answer object in a JSON form
+      // Emit an answer graded event with the answer object as a JSON
       socket.emit('answerGraded', answer.toJSON());
     });
 
-    // Use the emitter declared in the player class to listen for events with a 'roundBegin' message,
-    // and a data object passed in as data.
+    // Listen for roundBegin messages
     player.emitter.on('roundBegin', (data) => {
-      // Emit a message with a roundBeing message, a JSON representing the question, and the data objeect
+      // Emit a round begin evenet wit the room's current question as a JSON
       socket.emit('roundBegin', Object.assign(player.getRoom().getCurrentQuestion().toJSON(), data));
     });
 
-    // Use the emitter declared in the player class to listen for events with a 'roundEnd' message,
-    // and a time object passed in as data.
+    // Listen for a roundEnd message
     player.emitter.on('roundEnd', (time) => {
-      // Emit a message with the same roundEnd message and a time JSON
+      // Emit a round end message with the time object in a JSON
       socket.emit('roundEnd', { 'time': time });
     });
 
-     // Use the emitter declared in the player class to listen for events with a 'endGame' message
+    // Listen for endGame events
     player.emitter.on('endGame', () => {
-      // Emit the endGame message to the player client
+      // Emit an end game message
       socket.emit('endGame');
     });
-    
-    // Listen for joinRoom events with data passed in as an argument
+
+    // Listen for joinRoom events
     socket.on('joinRoom', (data) => {
-      // Call the room service to add the player 
+      // Add the player to the room indicated by the room ID
       RoomService.addPlayerToRoomByID(player, parseInt(data.roomID, 10));
     });
 
-    // Listen for submitAnswer events with data passed in as an argument
+    // Listen for submitAnswer messages
     socket.on('submitAnswer', (data) => {
-      // Call the player service with the player and data objects
+      // Call the playerService wih the player and the answer data
       PlayerService.submitAnswer(player, data);
     });
 
-    // Listen for disconnect events
+    // Listen for disconnect messages
     socket.on('disconnect', () => {
-      // Call the player service to remove the players from the room
+      // Call the playerService to remove the given player
       PlayerService.removePlayer(player);
     });
 

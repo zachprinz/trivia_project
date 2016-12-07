@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CS 499 Trivia</title>
+    {{> includes}}
+    <script type="text/javascript" src="/js/AdminClient.js"></script>
+</head>
+<body>
+{{> nav}}
+<div class="container fadeable">
+    <div class="row">
+        <h1 class="banner" align="center">Admin Functions</h1>
+    </div>
+    <div >
+        <form>
+            Please set the number of rounds:
+            <input id="admininput" type="number" name="rounds"
+                   min="0" max="100"  value="">
+            <button id="setRounds"
+                    class ="btn-primary"
+                    style="display: inline-block;">
+                Submit
+            </button>
+        </form>
+    </div>
+    <br/>
+    <div >
+        <form>
+            Please set the number of players:
+            <input id="admininput" type="number" name="numPlayers"
+                   min="0" max="10"  value="">
+            <button id="setPlayers"
+                    class ="btn-primary"
+                    style="display: inline-block;">
+                Submit
+            </button>
+        </form>
+    </div>
+
+
+</div>
+</body>
+</html>
