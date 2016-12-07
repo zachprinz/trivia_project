@@ -7,6 +7,7 @@ const http = require('http');
 
 const PlayerController = require('./controller/PlayerController.js');
 const HubController = require('./controller/HubController.js');
+const AdminController = require('./controller/AdminController.js');
 
 const PUBLIC_PATH = path.join(__dirname, '../components');
 const PORT = process.env.PORT || 3000;
@@ -48,6 +49,12 @@ app.get('/hub', (req, res) => {
   res.render('hub.hbs', { isHubPage: true });
 });
 
+// Handle HTTP GET requests at root '/admin.hbs'
+app.get('/admin', (req, res) => {
+  // Render the hub template with the isHubPage bool true
+  res.render('admin.hbs', { isAdminPage: true });
+});
+
 app.get('/end', (req, res) => {
   res.render('end.hbs');
 });
@@ -58,6 +65,9 @@ io.on('connection', (socket) => {
   });
   socket.on('registerAsHub', (data) => {
     HubController.listen(socket);
+  });
+  socket.on('registerAsAdmin', (data) => {
+    AdminController.listen(socket);
   });
 });
 
