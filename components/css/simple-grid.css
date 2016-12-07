@@ -93,6 +93,7 @@ p {
 .row {
   position: relative;
   width: 100%;
+  z-index: -1;
 }
 
 .row [class^="col"] {
