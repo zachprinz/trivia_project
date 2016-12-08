@@ -141,7 +141,12 @@
 /* Phone */
 @media screen and (max-width: 700px) {
   .nav-stub {
-    height: 88px;
+    height: 90px;
+    transition:height .2s;
+  }
+
+  .nav-stub.menuOpen {
+    height: 140px;
   }
 
   .nav-display{
@@ -186,7 +191,7 @@
     left:0px;
     right: 0px;
     transition:height .2s;
-    background:#303036;
+    background-color: rgb(83, 108, 137);
     justify-content: space-around;
     align-items: flex-end;
     display: flex;
@@ -210,7 +215,7 @@
   }
 
   .sub-menu .sub-menu-item:hover{
-    background:#eaeaea;
+    background:#303036;
   }
 
   .show{

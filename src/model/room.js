@@ -5,7 +5,7 @@ const QuestionService = require('../service/QuestionService.js');
  */
 const rooms = new Map();
 
-const ROUND_TIME = 6000;
+const ROUND_TIME = 60000;
 const ROUND_BREAK_TIME = 2000;
 const ROUND_MAX = 5;
 

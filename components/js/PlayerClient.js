@@ -127,10 +127,9 @@ function registerNextQuestion() {
   });
 }
 
-function registerJoinRoom() {
-  $('#join_room_button').click(() => {
-    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
-  });
+function joinRoom() {
+  console.log('joiningRoom');
+  socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
 }
 
 function registerEditRoom() {
@@ -144,7 +143,6 @@ $(document).ready(() => {
   registerSubmitAnswer();
   registerSelectAnswer();
   registerNextQuestion();
-  registerJoinRoom();
   registerEditRoom();
   socket.emit('registerAsPlayer');
 });
