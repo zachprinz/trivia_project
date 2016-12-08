@@ -2,7 +2,8 @@
   <div class="nav-content container">
     <div class="nav-group">
       <div class="nav-title">CS 499 Trivia</div>
-
+    </div>
+    <div class="nav-group nav-tab-group">
       <div role="presentation" class="nav-tab {{#if isHomePage}}active{{/if}}">
         <a href="/" class="nav-link">
           <i class="fa fa-home inline" aria-hidden="true"></i>
@@ -23,35 +24,17 @@
           <span>Hub</span>
         </a>
       </div>
-    </div>
-
-    <div class="nav-group">
-      {{> room}}
-    </div>
-
-    <div class="nav-group">
-      <div role="presentation">
-        <!-- <a href="/" class="nav-link-menu-icon">
-          <i class="fa fa-bars" aria-hidden="true"></i>
-          <span></span>
-        </a> -->
-        <div class="nav-link-menu-icon">
-          <i class="fa fa-bars" aria-hidden="true" onclick="showDropdown()"></i>
-          <span></span>
-
-        </div>
-        <ul class="sub-menu" id="my-sub-menu">
-          <li><a href="/">Home</a></li>
-          <li><a href="/play">Play</a></li>
-          <li><a href="/hub">Hub</a></li>
-        </ul>
+      <div class="nav-link-menu-icon">
+        <i class="fa fa-bars fa-3x" aria-hidden="true" onclick="showDropdown()"></i>
+        <span></span>
       </div>
     </div>
+
+  </div>
+  <div class="sub-menu" id="my-sub-menu">
+    <a class="sub-menu-item-wrapper" href="/"><span class="sub-menu-item">Home</span></a>
+    <a class="sub-menu-item-wrapper" href="/play"><span class="sub-menu-item">Play</span></a>
+    <a class="sub-menu-item-wrapper" href="/hub"><span class="sub-menu-item">Hub</span></a>
   </div>
 </div>
-
-<script>
-function showDropdown(){
-  document.getElementById("my-sub-menu").classList.toggle("show");
-}
-</script>
+<div class="nav-stub"></div>

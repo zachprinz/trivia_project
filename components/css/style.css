@@ -1,60 +1,32 @@
+.banner {
+  font-family: 'Cantora One', sans-serif;
+  color: #050401;
+}
+
+.game-description {
+  margin-top: 0;
+  text-indent: 50px;
+}
+
 /* Phone */
 @media screen and (max-width: 700px) {
   .banner {
-    font-family: 'Cantora One', sans-serif;
     font-size: 1em;
-    color: #050401;
   }
 
   .game-description {
-    margin-top: 0;
-    text-indent: 50px;
     font-size: 0.75em;
   }
 }
 
-/* Tablet */
-@media screen and (min-width: 701px) and (max-width: 1000px) {
+/* Desktop */
+@media screen and (min-width: 701px) {
   .banner {
-    font-family: 'Cantora One', sans-serif;
-    font-size: 3.5em;
-    color: #050401;
-  }
-
-  .game-description {
-    margin-top: 0;
-    text-indent: 50px;
-    font-size: 1.5em;
-  }
-}
-
-/* Laptop */
-@media screen and (min-width: 1001px) and (max-width: 1700px) {
-  .banner {
-    font-family: 'Cantora One', sans-serif;
     font-size: 4em;
-    color: #050401;
   }
 
   .game-description {
-    margin-top: 0;
-    text-indent: 50px;
-    font-size: 1.75em;
-  }
-}
-
-/* Large Desktop */
-@media screen and (min-width: 1701px){
-  .banner {
-    font-family: 'Cantora One', sans-serif;
-    font-size: 5em;
-    color: #050401;
-  }
-
-  .game-description {
-    margin-top: 0;
-    text-indent: 50px;
-    font-size: 2em;
+    font-size: 1.5em;
   }
 }
 

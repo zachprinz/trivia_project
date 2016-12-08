@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CS 499 Trivia</title>
+    <title>Tribage</title>
     {{> includes}}
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="/js/HubClient.js"></script>
@@ -10,6 +10,7 @@
   <body>
     {{> nav}}
     <div class="container fadeable">
+      {{> room}}
       {{> question}}
       <div class="flex end">
         <div class="eventlabel nav-display">

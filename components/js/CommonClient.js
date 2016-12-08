@@ -10,3 +10,7 @@ $(document).ready(() => {
     setTimeout(this.click.bind(this), 500);
   });
 });
+
+function showDropdown(){
+  document.getElementById("my-sub-menu").classList.toggle("show");
+}
