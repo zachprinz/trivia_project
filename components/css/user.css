@@ -39,6 +39,10 @@
   padding: 0 3px;
 }
 
+.edit .user-menu-icon-wrapper {
+  background: #36dc75;
+}
+
 .user-menu-item-icon {
   margin: 0;
 }
@@ -59,24 +63,12 @@
   white-space: nowrap;
 }
 
-.edit .user-menu-item-label-wrapper {
-
-}
-
 .edit .user-menu-item-label {
   display: none;
 }
 
 .edit.user-menu-item .user-menu-item-label-wrapper {
   width: 100%;
-}
-
-.user-menu-item-label {
-
-}
-
-.user-menu-edit-icon {
-
 }
 
 .user-menu-label-edit {

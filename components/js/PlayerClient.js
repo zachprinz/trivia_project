@@ -23,9 +23,7 @@ socket.on('endGame', () => {
 });
 
 socket.on('roomJoined', (data) => {
-  $('#room_id_label').text(data.id);
-  $('#join_room_button').blur();
-  $('#join_room_button').prop('disabled', true);
+  $('#roomLabel').text(data.id);
   $('#eventLabelEvent').text('Waiting to leave room... ');
   //$('#eventLabelTime').text(data.id);
 });
@@ -128,7 +126,7 @@ function registerNextQuestion() {
 }
 
 function joinRoom() {
-  console.log('joiningRoom');
+  console.log('joiningRoom: ' + $('[name=roomID]').val());
   socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
 }
 

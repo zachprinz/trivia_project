@@ -21,7 +21,7 @@ $(document).ready(() => {
       $(this).parent().addClass('edit');
       $('.edit .user-menu-label-edit').focus();
       $(this).parent().find('span').val()
-      $('.edit input').val($(this).parent().find('span').text());
+      $('.edit input').val($(this).parent().find('#roomLabel').text());
       icon = $(this).find('.fa-pencil');
       icon.removeClass('fa-pencil');
       icon.addClass('fa-check');
@@ -33,6 +33,9 @@ $(document).ready(() => {
         joinRoom();
       }
     }
+  });
+  $('input,select').bind('focusout blur',function(e) {
+    $('html, body').animate({scrollTop:0,scrollLeft:0}, 100);
   });
 });
 

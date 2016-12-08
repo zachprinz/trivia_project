@@ -17,6 +17,14 @@
   .game-description {
     font-size: 0.75em;
   }
+
+  .eventlabel {
+    height: 40px;
+  }
+
+  button {
+    height: 40px;
+  }
 }
 
 /* Desktop */
@@ -37,7 +45,6 @@ body {
 }
 
 button {
-  height: 29px;
   border: none;
   padding: 0 6px;
   border-radius: 4px;
@@ -56,6 +63,10 @@ table {
   border-collapse: collapse;
 }
 
+select{
+  font-size: 50px;
+}
+
 i {
   margin-right: 3px;
 }
@@ -66,6 +77,16 @@ h2 {
 
 ul {
   margin-top: 10px
+}
+
+.infoDisplay{
+  padding:0 6px;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  border-radius:4px;
+  color:#e2dff3;
+  background:#fc6c37;
 }
 
 .fadeable {
@@ -82,10 +103,7 @@ ul {
 }
 
 .eventlabel {
-  display:flex;
-  flex-direction: row;
   justify-content: flex-end;
-  flex-shrink: 1;
 }
 
 #eventLabelEvent {
