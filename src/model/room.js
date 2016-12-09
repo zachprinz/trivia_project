@@ -5,9 +5,16 @@ const QuestionService = require('../service/QuestionService.js');
  */
 const rooms = new Map();
 
-const ROUND_TIME = 100000;
+const DEFAULT_ROUND_TIME = 10000;
 const ROUND_BREAK_TIME = 2000;
-const ROUND_MAX = 5;
+const DEFAULT_ROUND_MAX = 5;
+
+const STATES = {
+  WAITING: 0,
+  PLAYING: 1,
+  FINISHED: 2,
+  CLOSED: 3,
+};
 
 const getNewRoomID = (() => {
   let curID = 0;
@@ -25,8 +32,9 @@ class Room {
     this.attachedHub = false;
     rooms.set(this.id, this);
     this.emitter = new EventEmitter();
-    QuestionService.transitionRound(this);
-    this.roundCount = 0;
+    this.state = STATES.WAITING;
+    this.numRounds = DEFAULT_ROUND_MAX;
+    this.roundTime = DEFAULT_ROUND_TIME;
   }
 
   static findByID(id) {
@@ -34,12 +42,37 @@ class Room {
   }
 
   static roomExists(id) {
-    return Room.findByID(id) !== undefined;
+    return (Room.findByID(id) !== undefined) && Room.findByID(id).isOpen();
+  }
+
+  beginGame() {
+    if (this.state === STATES.WAITING) {
+      this.state = STATES.PLAYING;
+      this.curRound = 0;
+      QuestionService.transitionRound(this);
+    }
+  }
+
+  endGame() {
+    this.state = STATES.FINISHED;
+    for (let [id, player] of this.players) {
+      player.emitter.emit('endGame');
+      this.removePlayer(player);
+    }
+  }
+
+  beginRound(question) {
+    this.curQuestion = question;
+    for (let [id, player] of this.players) {
+      player.emitter.emit('roundBegin', { time: this.roundTime });
+    }
+    this.emitter.emit('roundBegin', { time: this.roundTime });
+    setTimeout(this.endRound.bind(this), this.roundTime);
   }
 
   endRound() {
-    this.roundCount++;
-    if (this.roundCount === ROUND_MAX) {
+    this.curRound++;
+    if (this.curRound === this.numRounds) {
       this.endGame();
     } else {
       setTimeout(QuestionService.transitionRound.bind(undefined, this), ROUND_BREAK_TIME);
@@ -50,22 +83,6 @@ class Room {
     }
   }
 
-  endGame() {
-    for (let [id, player] of this.players) {
-      player.emitter.emit('endGame');
-      this.removePlayer(player);
-    }
-  }
-
-  beginRound(question) {
-    this.curQuestion = question;
-    for (let [id, player] of this.players) {
-      player.emitter.emit('roundBegin', { time: ROUND_TIME });
-    }
-    this.emitter.emit('roundBegin', { time: ROUND_TIME });
-    setTimeout(this.endRound.bind(this), ROUND_TIME);
-  }
-
   addPlayer(player) {
     this.players.set(player.getID(), player);
     this.emitter.emit('playerJoined', player);
@@ -74,6 +91,13 @@ class Room {
   removePlayer(player) {
     this.players.delete(player.getID());
     this.emitter.emit('playerLeft', player);
+    if (this.players.size === 0) {
+      this.state = STATES.CLOSED;
+    }
+  }
+
+  getPlayers() {
+    return this.players;
   }
 
   attachHub(emitter) {
@@ -83,6 +107,15 @@ class Room {
     for (let [id, player] of this.players) {
       this.emitter.emit('playerJoined', player);
     }
+  }
+
+  setAdmin(player) {
+    this.admin = player;
+    player.emitter.emit('setAdmin');
+  }
+
+  getAdmin() {
+    return this.admin;
   }
 
   hasHub() {
@@ -99,6 +132,18 @@ class Room {
 
   getID() {
     return this.id;
+  }
+
+  isOpen() {
+    return (this.state !== STATES.CLOSED);
+  }
+
+  setNumRounds(numRounds) {
+    this.numRounds = numRounds;
+  }
+
+  setRoundTime(roundTime) {
+    this.roundTime = roundTime;
   }
 
   toJSON() {

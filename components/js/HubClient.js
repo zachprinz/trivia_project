@@ -49,9 +49,7 @@ socket.on('playerLeft', (data) => {
 socket.on('hubAttached', (data) => {
   // Use jQuery to modif the view based on the id within the HTML file
   $('#playerList').empty();
-  $('#room_id_label').text(data.id);
-  $('#join_room_button').blur();
-  $('#join_room_button').prop('disabled', true);
+  $('#roomLabel').text(data.id);
 });
 
 // Listen for roomFailed events from the server
@@ -70,6 +68,11 @@ function updateEventTime(time) {
 
 // Listen for roundBegin event from the server
 socket.on('roundBegin', (data) => {
+  if ($('body').hasClass('preGameStarted')) {
+    $('body').removeClass('preGameStarted');
+    $('body').addClass('gameStarted');
+  }
+  console.log('round began');
   // Use jQuery to update the view
   $('.question-text').empty();
   $('.question-text').text(data.question);
@@ -84,24 +87,7 @@ socket.on('roundEnd', (data) => {
   updateEventTime(data.time);
 });
 
-// Function for registering the join room button
-function registerJoinRoom() {
-  // Use jQuery to generate the button
-  $('#join_room_button').click(() => {
-    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
-  });
-}
-
-// Function to disable to the join room button
-function registerEditRoom() {
-  $('#room_id_field').on('input', () => {
-    $('#join_room_button').prop('disabled', false);
-  });
-}
-
 // Execute the registrations above when the document fires a ready event
 $(document).ready(() => {
-  registerJoinRoom();
-  registerEditRoom();
   socket.emit('registerAsHub');
 });

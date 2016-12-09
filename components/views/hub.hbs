@@ -7,11 +7,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="/js/HubClient.js"></script>
   </head>
-  <body>
+  <body class='preGameStarted'>
     {{> nav}}
     <div class="container fadeable">
       {{> room}}
-      {{> question}}
+      <div class="preGameDisplay">
+        <h1 class="banner" align="center">Waiting to start</h1>
+        <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+      </div>
+      <div class="gameDisplay">
+        {{> question}}
+      </div>
       <div class="flex end">
         <div class="eventlabel nav-display">
           <span id="eventLabelEvent"></span>

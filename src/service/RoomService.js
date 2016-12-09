@@ -6,7 +6,7 @@ module.exports = {
   },
 
   addPlayerToRoomByID(player, roomID) {
-    if (Room.findByID(roomID) !== undefined) {
+    if (Room.roomExists(roomID)) {
       Room.findByID(roomID).addPlayer(player);
       player.setRoom(Room.findByID(roomID));
       return true;
@@ -16,7 +16,7 @@ module.exports = {
   },
 
   attachHubToRoomByID(emitter, roomID) {
-    if (Room.findByID(roomID) !== undefined && !Room.findByID(roomID).hasHub()) {
+    if (Room.roomExists(roomID) && !Room.findByID(roomID).hasHub()) {
       Room.findByID(roomID).attachHub(emitter);
       return true;
     }

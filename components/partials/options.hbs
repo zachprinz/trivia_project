@@ -1,16 +1,15 @@
-<div class="user-menu">
+<div class="user-menu adminPanel">
   <div class="user-menu-item fullWidth">
     <div class="user-menu-icon-wrapper usernameLabel">
       <i class="user-menu-item-icon fa fa-gear" aria-hidden="true"></i>
     </div>
     <div class="menu user-menu-item-label-wrapper">
-
-      <div class="menu-spinner-wrapper">
+      <div class="menu-spinner-wrapper disabled">
         <div class="menu-spinner-button">
           <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </div>
         <div class="menu-spinner-body-wrapper">
-          <div class="menu-spinner-value">
+          <div class="menu-spinner-value" id="topicValue">
             Javascript
           </div>
           <div class="menu-spinner-label">
@@ -21,30 +20,28 @@
           <i class="fa fa-chevron-right" aria-hidden="true"></i>
         </div>
       </div>
-
       <div class="menu-spinner-wrapper">
         <div class="menu-spinner-button">
           <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </div>
         <div class="menu-spinner-body-wrapper">
-          <div class="menu-spinner-value">
-            100
+          <div class="menu-spinner-value" id="roundTimeValue">
+            10
           </div>
           <div class="menu-spinner-label">
-            Players
+            Round Time
           </div>
         </div>
         <div class="menu-spinner-button right">
           <i class="fa fa-chevron-right" aria-hidden="true"></i>
         </div>
       </div>
-
       <div class="menu-spinner-wrapper">
         <div class="menu-spinner-button">
           <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </div>
         <div class="menu-spinner-body-wrapper">
-          <div class="menu-spinner-value">
+          <div class="menu-spinner-value" id="numRoundsValue">
             5
           </div>
           <div class="menu-spinner-label">
@@ -55,12 +52,9 @@
           <i class="fa fa-chevron-right" aria-hidden="true"></i>
         </div>
       </div>
-
-      <button type="button" class="menu-button btn-primary">
+      <button type="button" class="menu-button btn-primary" id="startGameButton">
         <i class="user-menu-item-icon fa fa-play" aria-hidden="true"></i>
       </button>
     </div>
-
   </div>
-
 </div>

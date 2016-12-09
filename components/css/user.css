@@ -29,7 +29,7 @@
   }
 
   .user-menu:not(:first-child) {
-    margin-left: 30px;
+    margin-left: 20px;
   }
 
   .user-menu-item {

@@ -1,14 +1,7 @@
 /* eslint-env jquery */
 /* global document:true */
 
-$(document).ready(() => {
-  $('.fadeable').fadeIn(500);
-  $('.navlink').click(function (event) {
-    event.preventDefault();
-    $('.fadeable').fadeOut(500);
-    $(this).unbind(event);
-    setTimeout(this.click.bind(this), 500);
-  });
+function initTextEdit() {
   $('.single .user-menu-icon-wrapper').click(function (event) {
     const open = $('.user-menu-item.edit');
     let icon = $(this).find('.fa-check');
@@ -34,8 +27,10 @@ $(document).ready(() => {
       }
     }
   });
+}
 
-  $('.menu-spinner-body-wrapper').click(function (event) {
+function initSpinner() {
+  $('.menu-spinner-wrapper:not(.disabled) .menu-spinner-body-wrapper').click(function (event) {
     const open = $('.menu-spinner-wrapper.edit');
     if (open) {
       open.removeClass('edit');
@@ -45,12 +40,47 @@ $(document).ready(() => {
     }
   });
 
+  $('.menu-spinner-button').click(function (event) {
+    let valueElement = $(this).parent().find('.menu-spinner-value');
+    let value = parseInt(valueElement.text(), 10);
+    value += $(this).hasClass('right') ? 1 : -1;
+    if (value < 0) {
+      value = 0;
+    }
+    valueElement.text(value);
+  });
+}
+
+function initNavtab() {
+  $('.navlink').click(function (event) {
+    event.preventDefault();
+    $('.fadeable').fadeOut(500);
+    $(this).unbind(event);
+    setTimeout(this.click.bind(this), 500);
+  });
+}
+
+function preventFocusZoom() {
   $('input,select').bind('focusout blur',function(e) {
     $('html, body').animate({scrollTop:0,scrollLeft:0}, 100);
   });
-});
+}
 
-function showDropdown(){
+function showDropdown() {
   $('.nav-stub').toggleClass('menuOpen');
   document.getElementById("my-sub-menu").classList.toggle("show");
 }
+
+function joinRoom() {
+  if ($('[name=roomID]').val() !== $('#roomLabel').text()) {
+    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
+  }
+}
+
+$(document).ready(() => {
+  $('.fadeable').fadeIn(500);
+  initNavtab();
+  initTextEdit();
+  initSpinner();
+  preventFocusZoom();
+});

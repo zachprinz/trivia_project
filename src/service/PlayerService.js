@@ -11,6 +11,7 @@ module.exports = {
   initPlayer(player) {
     const room = RoomService.createRoom();
     RoomService.addPlayerToRoomByID(player, room.getID());
+    room.setAdmin(player);
   },
 
   removePlayer(player) {

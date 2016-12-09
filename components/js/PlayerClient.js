@@ -23,13 +23,19 @@ socket.on('endGame', () => {
 });
 
 socket.on('roomJoined', (data) => {
+  $('.adminPanel').removeClass('admin');
   $('#roomLabel').text(data.id);
+  $('body').addClass('preGameStarted');
+  $('body').removeClass('gameStarted');
   $('#eventLabelEvent').text('Waiting to leave room... ');
-  //$('#eventLabelTime').text(data.id);
 });
 
 socket.on('roomJoinFailed', (data) => {
-  console.log('failed to find roomss');
+  console.log('failed to find room');
+});
+
+socket.on('setAdmin', () => {
+  $('.adminPanel').addClass('admin');
 });
 
 function updateEventTime(time) {
@@ -40,6 +46,10 @@ function updateEventTime(time) {
 }
 
 socket.on('roundBegin', (data) => {
+  if ($('body').hasClass('preGameStarted')) {
+    $('body').removeClass('preGameStarted');
+    $('body').addClass('gameStarted');
+  }
   $('#answer_list').empty();
   $('.question-text').text(data.question);
   const answers = data.answers;
@@ -115,6 +125,16 @@ function registerSelectAnswer() {
   });
 }
 
+function registerStartGame() {
+  $('.preGameStarted #startGameButton').click(() => {
+    socket.emit('startGame', {
+      numRounds: $('#numRoundsValue').text().trim(),
+      roundTime: $('#roundTimeValue').text().trim() * 1000,
+      topic: $('topicValue').text().trim(),
+    });
+  });
+}
+
 /**
  * Register a listener for the next question button
  * On next question click, request a new question
@@ -123,11 +143,6 @@ function registerNextQuestion() {
   $('#next_question_button').click(() => {
     socket.emit('requestNewQuestion');
   });
-}
-
-function joinRoom() {
-  console.log('joiningRoom: ' + $('[name=roomID]').val());
-  socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
 }
 
 function registerEditRoom() {
@@ -141,6 +156,7 @@ $(document).ready(() => {
   registerSubmitAnswer();
   registerSelectAnswer();
   registerNextQuestion();
+  registerStartGame();
   registerEditRoom();
   socket.emit('registerAsPlayer');
 });
