@@ -131,12 +131,12 @@
 /* Phone */
 @media screen and (max-width: 700px) {
   .nav-stub {
-    height: 90px;
+    height: 70px;
     transition:height .2s;
   }
 
   .nav-stub.menuOpen {
-    height: 140px;
+    height: 120px;
   }
 
   .nav-display{
@@ -146,7 +146,7 @@
   }
 
   .nav-content{
-    padding: 20px;
+    padding: 10px;
   }
 
   .nav-group{

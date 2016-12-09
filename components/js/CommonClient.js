@@ -9,13 +9,13 @@ $(document).ready(() => {
     $(this).unbind(event);
     setTimeout(this.click.bind(this), 500);
   });
-  $('.user-menu-icon-wrapper').click(function (event) {
-    const open = $('.edit');
+  $('.single .user-menu-icon-wrapper').click(function (event) {
+    const open = $('.user-menu-item.edit');
     let icon = $(this).find('.fa-check');
     if (open && icon) {
       open.removeClass('edit');
       icon.removeClass('fa-check');
-      icon.addClass('fa-pencil');
+      icon.addClass('fa-pencil fa-flip-horizontal');
     }
     if (!open || !$(this).parent().is(open)) {
       $(this).parent().addClass('edit');
@@ -23,7 +23,7 @@ $(document).ready(() => {
       $(this).parent().find('span').val()
       $('.edit input').val($(this).parent().find('#roomLabel').text());
       icon = $(this).find('.fa-pencil');
-      icon.removeClass('fa-pencil');
+      icon.removeClass('fa-pencil fa-flip-horizontal');
       icon.addClass('fa-check');
     } else {
       // Commit the change
@@ -34,6 +34,17 @@ $(document).ready(() => {
       }
     }
   });
+
+  $('.menu-spinner-body-wrapper').click(function (event) {
+    const open = $('.menu-spinner-wrapper.edit');
+    if (open) {
+      open.removeClass('edit');
+    }
+    if (!open || !$(this).parent().is(open)) {
+      $(this).parent().addClass('edit');
+    }
+  });
+
   $('input,select').bind('focusout blur',function(e) {
     $('html, body').animate({scrollTop:0,scrollLeft:0}, 100);
   });
