@@ -1,3 +1,51 @@
+.banner {
+  font-family: 'Cantora One', sans-serif;
+  color: #050401;
+}
+
+.game-description {
+  margin-top: 0;
+  text-indent: 50px;
+}
+
+/* Phone */
+@media screen and (max-width: 700px) {
+  .banner {
+    font-size: 2.5em;
+  }
+
+  .options {
+    flex-direction: column;
+  }
+
+  .game-description {
+    font-size: 0.75em;
+  }
+
+  .eventlabel {
+    height: 40px;
+  }
+
+  button {
+    height: 40px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 701px) {
+  .banner {
+    font-size: 4em;
+  }
+
+  .options {
+    flex-direction: row;
+  }
+
+  .game-description {
+    font-size: 1.5em;
+  }
+}
+
 body {
   background-color: #EAEAEA;
   color: #050401;
@@ -5,7 +53,6 @@ body {
 }
 
 button {
-  height: 29px;
   border: none;
   padding: 0 6px;
   border-radius: 4px;
@@ -24,6 +71,10 @@ table {
   border-collapse: collapse;
 }
 
+select{
+  font-size: 50px;
+}
+
 i {
   margin-right: 3px;
 }
@@ -34,6 +85,48 @@ h2 {
 
 ul {
   margin-top: 10px
+}
+
+.options {
+  display: flex;
+}
+
+.postGameDisplay,
+.transferDisplay,
+.preGameDisplay {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameDisplay {
+  flex-direction: column;
+}
+
+.gameDisplay,
+.preGameDisplay,
+.transferDisplay,
+.postGameDisplay {
+  display: none;
+}
+
+[data-state=waiting] .preGameDisplay,
+[data-state=playing] .gameDisplay,
+[data-state=transfering] .transferDisplay,
+[data-state=finished] .postGameDisplay {
+  display: flex;
+}
+
+.infoDisplay{
+  padding:0 6px;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  border-radius:4px;
+  color:#e2dff3;
+  background:#fc6c37;
 }
 
 .fadeable {
@@ -49,22 +142,8 @@ ul {
   width: 125px;
 }
 
-.banner {
-  font-family: 'Cantora One', sans-serif;
-  font-size: 3em;
-  color: #050401;
-}
-
-.game-description {
-  margin-top: 0;
-  text-indent: 50px;
-}
-
 .eventlabel {
-  display:flex;
-  flex-direction: row;
   justify-content: flex-end;
-  flex-shrink: 1;
 }
 
 #eventLabelEvent {
@@ -106,7 +185,7 @@ ul {
 }
 
 .question-container {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -129,10 +208,45 @@ ul {
 .player-label {
   font-weight: 900;
   font-size: 20px;
-  margin-bottom: 8px;
+  margin: 8px 0;
+  padding: 0 8px;
 }
 
 .playercount-label {
   font-size: 25px;
   font-weight: 400;
+}
+
+.user-menu.adminPanel {
+  display: none;
+}
+
+.user-menu.adminPanel.admin {
+  display: flex;
+}
+
+.player-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.player-wrapper:first-child {
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+
+.player-score {
+  font-size: 20px;
+}
+
+.player-score-label {
+  white-space: pre;
+}
+
+#playerList {
+  margin-top: 10px;
 }

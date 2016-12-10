@@ -2,27 +2,45 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CS 499 Trivia</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Tribage</title>
     {{> includes}}
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="/js/PlayerClient.js"></script>
   </head>
-  <body>
+  <body data-state="waiting">
     {{> nav}}
     <div class="container fadeable">
-      <div class="row">
-        <div class="questionBody">
-          {{> qa}}
+      <div class="options">
+        {{> user}}
+        {{> options}}
+      </div>
+      <div class="preGameDisplay">
+        <h1 class="banner" align="center">Waiting to start</h1>
+        <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+      </div>
+      <div class="transferDisplay">
+        <h1 class="banner" align="center">Waiting for next round</h1>
+        <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+      </div>
+      <div class="gameDisplay">
+        <div class="row">
+          <div class="questionBody">
+            {{> qa}}
+          </div>
         </div>
-        <div class="flex split">
-          <button id="answer_submit_button"
-            type="button"
-            class="btn-primary"
-            disabled="true">
-            Submit
-          </button>
-          <div class="eventlabel nav-display">
-            <span id="eventLabelEvent"></span>
-            <span id="eventLabelTime"></span>
+        <div class="row">
+          <div class="flex split">
+            <button id="answer_submit_button"
+              type="button"
+              class="btn-primary"
+              disabled="true">
+              Submit
+            </button>
+            <div class="eventlabel infoDisplay">
+              <span id="eventLabelEvent"></span>
+              <span id="eventLabelTime"></span>
+            </div>
           </div>
         </div>
       </div>

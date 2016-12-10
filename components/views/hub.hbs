@@ -2,25 +2,36 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CS 499 Trivia</title>
+    <title>Tribage</title>
     {{> includes}}
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="/js/HubClient.js"></script>
   </head>
-  <body>
+  <body data-state="waiting" data-room={{requestedRoom}}>
     {{> nav}}
     <div class="container fadeable">
-      {{> question}}
-      <div class="flex end">
-        <div class="eventlabel nav-display">
-          <span id="eventLabelEvent"></span>
-          <span id="eventLabelTime"></span>
+      {{> room}}
+      <div class="preGameDisplay">
+        <h1 class="banner" align="center">Waiting to start</h1>
+        <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+      </div>
+      <div class="postGameDisplay">
+        <h1 class="banner" align="center">Game has ended</h1>
+      </div>
+      <div class="gameDisplay">
+        {{> question}}
+        <div class="flex end">
+          <div class="eventlabel nav-display">
+            <span id="eventLabelEvent"></span>
+            <span id="eventLabelTime"></span>
+          </div>
         </div>
       </div>
       <h2 class="players-label inline">Players: </h2>
       <h3 class="playercount-label inline">0</h3>
-      <ul id="playerList">
+      <div id="playerList">
         <!-- Empty -->
-      </ul>
+      </div>
     </div>
   </body>
 </html>

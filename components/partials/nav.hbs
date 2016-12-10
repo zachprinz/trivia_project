@@ -2,27 +2,39 @@
   <div class="nav-content container">
     <div class="nav-group">
       <div class="nav-title">CS 499 Trivia</div>
+    </div>
+    <div class="nav-group nav-tab-group">
       <div role="presentation" class="nav-tab {{#if isHomePage}}active{{/if}}">
         <a href="/" class="nav-link">
           <i class="fa fa-home inline" aria-hidden="true"></i>
           <span>Home</span>
         </a>
       </div>
+
       <div role="presentation" class="nav-tab {{#if isPlayPage}}active{{/if}}">
         <a href="/play" class="nav-link">
           <i class="fa fa-graduation-cap inline" aria-hidden="true"></i>
           <span>Play</span>
         </a>
       </div>
+
       <div role="presentation" class="nav-tab {{#if isHubPage}}active{{/if}}">
         <a href="/hub" class="nav-link">
           <i class="fa fa-bar-chart inline" aria-hidden="true"></i>
           <span>Hub</span>
         </a>
       </div>
+      <div class="nav-link-menu-icon">
+        <i class="fa fa-bars fa-3x" aria-hidden="true" onclick="showDropdown()"></i>
+        <span></span>
+      </div>
     </div>
-    <div class="nav-group">
-      {{> room}}
-    </div>
+
+  </div>
+  <div class="sub-menu" id="my-sub-menu">
+    <a class="sub-menu-item-wrapper" href="/"><span class="sub-menu-item">Home</span></a>
+    <a class="sub-menu-item-wrapper" href="/play"><span class="sub-menu-item">Play</span></a>
+    <a class="sub-menu-item-wrapper" href="/hub"><span class="sub-menu-item">Hub</span></a>
   </div>
 </div>
+<div class="nav-stub"></div>

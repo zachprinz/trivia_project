@@ -1,8 +1,11 @@
 /* eslint-env jquery */
 /* global document:true */
 
+// Register a socket to used to connect to the server
 const socket = io();
 
+let transferRequested = false;
+// Variable that is used to render the HTML for an answer
 const answerItem = $([
   '<div class="answer active" name="answer">',
   ' <div class="answer-select"></div>',
@@ -10,47 +13,72 @@ const answerItem = $([
   '</div>',
 ].join('\n'));
 
+
+// Function that listens for 'connect' messages
 socket.on('connect', () => {
   console.log('Connected');
 });
 
+// Function that listen for 'disconnect' messages
 socket.on('disconnect', () => {
   console.log('Disconnected');
 });
 
-socket.on('endGame', () => {
-  window.location.replace('/end');
+// Functiont that listens for 'endGame' messages and replaces with the current window with the
+// "end" page
+socket.on('endGame', (data) => {
+  window.location.replace('/hub?room=' + data.id);
 });
 
+// Function that listens for roomJoined messages, with included data
 socket.on('roomJoined', (data) => {
-  $('#room_id_label').text(data.id);
-  $('#join_room_button').blur();
-  $('#join_room_button').prop('disabled', true);
+  // jQuery functions that execute on the html described in the function arguments
+  $('.adminPanel').removeClass('admin');
+  $('#roomLabel').text(data.id);
+  $('body').addClass('preGameStarted');
+  $('body').removeClass('gameStarted');
   $('#eventLabelEvent').text('Waiting to leave room... ');
-  //$('#eventLabelTime').text(data.id);
+  if (transferRequested) {
+    $('body').attr('data-state', 'transfering');
+    transferRequested = false;
+  }
 });
 
+// Fucntion that listens for 'roomJoinFailed' messages, with included data
 socket.on('roomJoinFailed', (data) => {
-  console.log('failed to find roomss');
+  console.log('failed to find room');
 });
 
+socket.on('setAdmin', () => {
+  $('.adminPanel').addClass('admin');
+});
+
+// Function that updates the time using a passed in argument
 function updateEventTime(time) {
+  // jQuery function that sets the text of the eventLabelTime element of the HTML to the time/100
   $('#eventLabelTime').text(time / 1000);
   if (time > 1000) {
     setTimeout(updateEventTime.bind(this, time - 1000), 1000);
   }
 }
 
+// Function that listens for 'roundBegin' messages, with included data
 socket.on('roundBegin', (data) => {
+  if ($('body').attr('data-state') === 'transfering') {
+    $('body').attr('data-state', 'playing');
+  }
   $('#answer_list').empty();
   $('.question-text').text(data.question);
+  // Set a constant value for the answers found in the data object
   const answers = data.answers;
+  // For each loop that goes through answer and pulls out the value
   answers.forEach((answer) => {
     const answerBody = answerItem.clone(true);
     answerBody.val(answer);
     answerBody.find('span').text(answer);
     $('#answer_list').append(answerBody);
   });
+  // jQuery that executes on the given HTML elements, mostly to disable the buttons
   $('#answer_list :first-child').addClass('selected');
   $('#answer_submit_button').prop('disabled', true);
   $('#next_question_button').prop('disabled', true);
@@ -59,7 +87,14 @@ socket.on('roundBegin', (data) => {
   registerSelectAnswer();
 });
 
+socket.on('setState', (data) => {
+  console.log('setting state');
+  $('body').attr('data-state', data.state);
+});
+
+// Function that listens for 'roundEnd' messages, with included data
 socket.on('roundEnd', (data) => {
+  // jQuery that edits the given HTML elements
   $('#eventLabelEvent').text('New round beginning in: ');
   $('.answer.active').each(function () {
     $(this).removeClass('active');
@@ -69,6 +104,7 @@ socket.on('roundEnd', (data) => {
   updateEventTime(data.time);
 });
 
+// Function that listens for 'answerGraded' messages, with included data
 socket.on('answerGraded', (data) => {
   // Upon completion, restyle the page to reflect the result
   if (data.correct) {
@@ -76,12 +112,15 @@ socket.on('answerGraded', (data) => {
   } else {
     $('.answer.selected').addClass('incorrect');
   }
+  // jQuery that disables the answer button and enables the next question button
   $('#answer_submit_button').prop('disabled', true);
   $('#next_question_button').prop('disabled', false);
   $('.answer').prop('disabled', true);
 });
 
+// Function that listens for 'regesterAsPlayer' message
 socket.on('registeredAsPlayer', () => {
+  // Emit a new requestNewQuestion event
   socket.emit('requestNewQuestion');
 });
 
@@ -117,6 +156,16 @@ function registerSelectAnswer() {
   });
 }
 
+function registerStartGame() {
+  $('body[data-state="waiting"] #startGameButton').click(() => {
+    socket.emit('startGame', {
+      numRounds: $('#numRoundsValue').text().trim(),
+      roundTime: $('#roundTimeValue').text().trim() * 1000,
+      topic: $('topicValue').text().trim(),
+    });
+  });
+}
+
 /**
  * Register a listener for the next question button
  * On next question click, request a new question
@@ -127,16 +176,24 @@ function registerNextQuestion() {
   });
 }
 
-function registerJoinRoom() {
-  $('#join_room_button').click(() => {
-    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
-  });
-}
-
 function registerEditRoom() {
   $('#room_id_field').on('input', () => {
     $('#join_room_button').prop('disabled', false);
   });
+}
+
+function joinRoom() {
+  if ($('[name=roomID]').val() !== $('#roomLabel').text()) {
+    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
+    transferRequested = true;
+  }
+}
+
+function setUsername() {
+  if ($('[name=username]').val() !== $('#usernameLabel').text()) {
+    socket.emit('setUsername', { username: $('[name=username]').val() });
+    $('#usernameLabel').text($('[name=username]').val());
+  }
 }
 
 // Execute the registrations above when the document fires a ready event
@@ -144,7 +201,7 @@ $(document).ready(() => {
   registerSubmitAnswer();
   registerSelectAnswer();
   registerNextQuestion();
-  registerJoinRoom();
+  registerStartGame();
   registerEditRoom();
   socket.emit('registerAsPlayer');
 });
