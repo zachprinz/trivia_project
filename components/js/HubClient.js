@@ -33,7 +33,7 @@ socket.on('playerJoined', (data) => {
   // Build the view up from the data passed into the anonymous function
   const user = userItem.clone();
   user.attr('value', data.id);
-  user.find('.player-label').text('Player ' + data.id);
+  user.find('.player-label').text(data.username);
   user.find('.player-score-value').text(data.score);
 
   // Use jQuery to append the user data to the view

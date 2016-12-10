@@ -3,12 +3,14 @@
 
 const socket = io();
 
+let transferRequested = false;
 const answerItem = $([
   '<div class="answer active" name="answer">',
   ' <div class="answer-select"></div>',
   ' <span></span>',
   '</div>',
 ].join('\n'));
+
 
 socket.on('connect', () => {
   console.log('Connected');
@@ -28,6 +30,10 @@ socket.on('roomJoined', (data) => {
   $('body').addClass('preGameStarted');
   $('body').removeClass('gameStarted');
   $('#eventLabelEvent').text('Waiting to leave room... ');
+  if (transferRequested) {
+    $('body').attr('data-state', 'transfering');
+    transferRequested = false;
+  }
 });
 
 socket.on('roomJoinFailed', (data) => {
@@ -46,6 +52,9 @@ function updateEventTime(time) {
 }
 
 socket.on('roundBegin', (data) => {
+  if ($('body').attr('data-state') === 'transfering') {
+    $('body').attr('data-state', 'playing');
+  }
   $('#answer_list').empty();
   $('.question-text').text(data.question);
   const answers = data.answers;
@@ -155,6 +164,14 @@ function registerEditRoom() {
 function joinRoom() {
   if ($('[name=roomID]').val() !== $('#roomLabel').text()) {
     socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
+    transferRequested = true;
+  }
+}
+
+function setUsername() {
+  if ($('[name=username]').val() !== $('#usernameLabel').text()) {
+    socket.emit('setUsername', { username: $('[name=username]').val() });
+    $('#usernameLabel').text($('[name=username]').val());
   }
 }
 

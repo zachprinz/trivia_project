@@ -15,6 +15,7 @@ class Player {
 
   constructor() {
     this.id = getNewUserID();
+    this.username = 'Player' + this.id;
     this.answers = [];
     this.emitter = new EventEmitter();
     this.score = 0;
@@ -47,10 +48,15 @@ class Player {
     this.emitter.emit('roomJoined', room);
   }
 
+  setUsername(username) {
+    this.username = username;
+  }
+
   toJSON() {
     return {
       id: this.id,
       score: this.score,
+      username: this.username,
     };
   }
 }

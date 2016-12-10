@@ -92,6 +92,7 @@ ul {
 }
 
 .postGameDisplay,
+.transferDisplay,
 .preGameDisplay {
   height: 100%;
   display: flex;
@@ -106,12 +107,14 @@ ul {
 
 .gameDisplay,
 .preGameDisplay,
+.transferDisplay,
 .postGameDisplay {
   display: none;
 }
 
 [data-state=waiting] .preGameDisplay,
 [data-state=playing] .gameDisplay,
+[data-state=transfering] .transferDisplay,
 [data-state=finished] .postGameDisplay {
   display: flex;
 }

@@ -6,7 +6,7 @@ const QuestionService = require('../service/QuestionService.js');
 const rooms = new Map();
 
 const DEFAULT_ROUND_TIME = 10000;
-const ROUND_BREAK_TIME = 2000;
+const ROUND_BREAK_TIME = 5000;
 const DEFAULT_ROUND_MAX = 5;
 
 const STATES = {
@@ -68,11 +68,21 @@ class Room {
       player.emitter.emit('roundBegin', { time: this.roundTime });
     }
     this.emitters.forEach(emitter => emitter.emit('roundBegin', { time: this.roundTime }));
-    setTimeout(this.endRound.bind(this), this.roundTime);
+    this.elapsedTime = 0;
+    setTimeout(this.updateRoundTime.bind(this), 1000);
+  }
+
+  updateRoundTime() {
+    this.elapsedTime += 1000;
+    if (this.elapsedTime === this.roundTime) {
+      this.endRound();
+    } else {
+      setTimeout(this.updateRoundTime.bind(this), 1000);
+    }
   }
 
   endRound() {
-    this.curRound++;
+    this.curRound += 1;
     if (this.curRound === this.numRounds) {
       this.endGame();
     } else {
@@ -114,6 +124,9 @@ class Room {
     emitter.emit('hubAttached', this);
     for (let [id, player] of this.players) {
       emitter.emit('playerJoined', player);
+    }
+    if (this.state === STATES.PLAYING) {
+      emitter.emit('roundBegin', { time: this.roundTime - this.elapsedTime });
     }
   }
 

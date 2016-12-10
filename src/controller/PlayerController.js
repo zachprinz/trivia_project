@@ -70,6 +70,10 @@ module.exports = {
       }
     });
 
+    socket.on('setUsername', (data) => {
+      player.setUsername(data.username);
+    });
+
     // Listen for joinRoom events with data passed in as an argument
     socket.on('joinRoom', (data) => {
       // Call the room service to add the player

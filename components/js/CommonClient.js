@@ -2,7 +2,11 @@
 /* global document:true */
 
 function initTextEdit() {
-  $('.single .user-menu-icon-wrapper').click(function (event) {
+  $('.user-menu-label-edit').click(function (event) {
+    event.stopPropagation();
+  });
+  $('.user-menu-item.single').click(function (event) {
+    // If this is a multi item menu item we don't want this behavior.
     const open = $('.user-menu-item.edit');
     let icon = $(this).find('.fa-check');
     if (open && icon) {
@@ -10,21 +14,27 @@ function initTextEdit() {
       icon.removeClass('fa-check');
       icon.addClass('fa-pencil fa-flip-horizontal');
     }
-    if (!open || !$(this).parent().is(open)) {
-      $(this).parent().addClass('edit');
+    if (!open || !$(this).is(open)) {
+      $(this).addClass('edit');
       $('.edit .user-menu-label-edit').focus();
-      $(this).parent().find('span').val()
-      $('.edit input').val($(this).parent().find('#roomLabel').text());
+      $(this).find('.span').val()
+      $('.edit input').val($(this).find('.user-menu-item-label').text());
       icon = $(this).find('.fa-pencil');
       icon.removeClass('fa-pencil fa-flip-horizontal');
       icon.addClass('fa-check');
     } else {
       // Commit the change
-      if ($(this).hasClass('usernameLabel')) {
+      if ($(this).find('.usernameLabel').size()) {
+        setUsername();
         /* Empty */
-      } else if ($(this).hasClass('roomLabel')) {
+      } else if ($(this).find('.roomLabel').size()) {
         joinRoom();
       }
+    }
+  });
+  $('.user-menu-label-edit').keyup(function (event) {
+    if (event.keyCode === 13) {
+      $(this).parent().parent().click();
     }
   });
 }
