@@ -81,6 +81,7 @@ function showDropdown() {
   document.getElementById("my-sub-menu").classList.toggle("show");
 }
 
+// Function that applies the inner jQuery to each page independant of which client is being accessed
 $(document).ready(() => {
   $('.fadeable').fadeIn(500);
   initNavtab();
