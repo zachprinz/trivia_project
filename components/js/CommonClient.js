@@ -71,12 +71,6 @@ function showDropdown() {
   document.getElementById("my-sub-menu").classList.toggle("show");
 }
 
-function joinRoom() {
-  if ($('[name=roomID]').val() !== $('#roomLabel').text()) {
-    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
-  }
-}
-
 $(document).ready(() => {
   $('.fadeable').fadeIn(500);
   initNavtab();

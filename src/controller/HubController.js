@@ -2,9 +2,14 @@ const RoomService = require('../service/RoomService.js');
 const EventEmitter = require('events');
 
 module.exports = {
-  listen(socket) {
+  listen(socket, requestedRoomID) {
     const emitter = new EventEmitter();
-    let curRoom = RoomService.createRoom();
+    let curRoom;
+    if (requestedRoomID === -1 || !RoomService.findByID(requestedRoomID)) {
+      curRoom = RoomService.createRoom();
+    } else {
+      curRoom = RoomService.findByID(requestedRoomID);
+    }
 
     emitter.on('hubAttached', (room) => {
       curRoom = room;
@@ -25,6 +30,18 @@ module.exports = {
 
     emitter.on('playerLeft', (player) => {
       socket.emit('playerLeft', player.toJSON());
+    });
+
+    emitter.on('setScore', (player) => {
+      socket.emit('setScore', player.toJSON());
+    });
+
+    emitter.on('endGame', () => {
+      socket.emit('endGame');
+    });
+
+    emitter.on('setState', (data) => {
+      socket.emit('setState', data);
     });
 
     socket.on('joinRoom', (data) => {

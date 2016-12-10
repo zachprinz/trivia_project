@@ -6,12 +6,17 @@ const socket = io();
 
 // Hand-write a list item in HTML for user items
 const userItem = $([
-  '<li class="player-label">',
+  '<li class="player-wrapper">',
+    '<div class="player-label"></div>',
+    '<div class="player-score">',
+      '<span class="player-score-label">Score:</span>',
+      '<span class="player-score-value">0</span></div>',
   '</li>',
 ].join('\n'));
 
 // Initialize the player count to 0
 let playerCount = 0;
+let isOver = false;
 
 // Listen for connect events from the server
 socket.on('connect', () => {
@@ -28,21 +33,27 @@ socket.on('playerJoined', (data) => {
   // Build the view up from the data passed into the anonymous function
   const user = userItem.clone();
   user.attr('value', data.id);
-  user.text('Player ' + data.id);
-  console.log('playerJoined');
+  user.find('.player-label').text('Player ' + data.id);
+  user.find('.player-score-value').text(data.score);
+
   // Use jQuery to append the user data to the view
   $('#playerList').append(user);
-  $('.playercount-label').text(++playerCount);
+  playerCount += 1;
+  $('.playercount-label').text(playerCount);
 });
 
 // Listen for playerLeft events from the server
 socket.on('playerLeft', (data) => {
-  console.log('playerLeft');
+  if (isOver) {
+    return;
+  }
   // Build up the view from the data object
-  const playerSelector = 'h3[value="' + data.id + '"]';
+  const playerSelector = '.player-wrapper[value="' + data.id + '"]';
   // Use jQuery to remove the player from the view
   $('#playerList').find(playerSelector).remove();
-  $('.playercount-label').text(--playerCount);
+  playerCount -= 1;
+  console.log('playerLeft');
+  $('.playercount-label').text(playerCount);
 });
 
 // Listen for hubAttached events from the server
@@ -50,6 +61,16 @@ socket.on('hubAttached', (data) => {
   // Use jQuery to modif the view based on the id within the HTML file
   $('#playerList').empty();
   $('#roomLabel').text(data.id);
+});
+
+socket.on('setState', (data) => {
+  $('body').attr('data-state', data.state);
+});
+
+socket.on('setScore', (data) => {
+  const label = $('.player-wrapper[value=' + data.id + ']');
+  const scoreLabel = label.find('.player-score-value');
+  scoreLabel.text(parseInt(data.score, 10));
 });
 
 // Listen for roomFailed events from the server
@@ -68,11 +89,7 @@ function updateEventTime(time) {
 
 // Listen for roundBegin event from the server
 socket.on('roundBegin', (data) => {
-  if ($('body').hasClass('preGameStarted')) {
-    $('body').removeClass('preGameStarted');
-    $('body').addClass('gameStarted');
-  }
-  console.log('round began');
+
   // Use jQuery to update the view
   $('.question-text').empty();
   $('.question-text').text(data.question);
@@ -87,7 +104,18 @@ socket.on('roundEnd', (data) => {
   updateEventTime(data.time);
 });
 
+socket.on('endGame', () => {
+  isOver = true;
+})
+
+function joinRoom() {
+  if ($('[name=roomID]').val() !== $('#roomLabel').text()) {
+    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
+  }
+}
+
 // Execute the registrations above when the document fires a ready event
 $(document).ready(() => {
-  socket.emit('registerAsHub');
+
+  socket.emit('registerAsHub', {requestedRoomID: $('body').attr('data-room') });
 });

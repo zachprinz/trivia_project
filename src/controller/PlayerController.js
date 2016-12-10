@@ -48,13 +48,18 @@ module.exports = {
 
      // Use the emitter declared in the player class to listen for events with a
      // 'endGame' message
-    player.emitter.on('endGame', () => {
+    player.emitter.on('endGame', (room) => {
       // Emit the endGame message to the player client
-      socket.emit('endGame');
+      socket.emit('endGame', room.toJSON());
     });
 
     player.emitter.on('setAdmin', () => {
       socket.emit('setAdmin');
+    });
+
+    player.emitter.on('setState', (data) => {
+      console.log('setting player state');
+      socket.emit('setState', data);
     });
 
     socket.on('startGame', (data) => {
@@ -80,6 +85,7 @@ module.exports = {
     // Listen for disconnect events
     socket.on('disconnect', () => {
       // Call the player service to remove the players from the room
+      console.log('disconnecting player');
       PlayerService.removePlayer(player);
     });
 

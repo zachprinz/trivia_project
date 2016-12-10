@@ -15,6 +15,7 @@ const STATES = {
   FINISHED: 2,
   CLOSED: 3,
 };
+const STATE_STRINGS = ['waiting', 'playing', 'finished', 'closed'];
 
 const getNewRoomID = (() => {
   let curID = 0;
@@ -31,8 +32,8 @@ class Room {
     this.players = new Map();
     this.attachedHub = false;
     rooms.set(this.id, this);
-    this.emitter = new EventEmitter();
-    this.state = STATES.WAITING;
+    this.emitters = [];
+    this.setState(STATES.WAITING);
     this.numRounds = DEFAULT_ROUND_MAX;
     this.roundTime = DEFAULT_ROUND_TIME;
   }
@@ -47,17 +48,17 @@ class Room {
 
   beginGame() {
     if (this.state === STATES.WAITING) {
-      this.state = STATES.PLAYING;
+      this.setState(STATES.PLAYING);
       this.curRound = 0;
       QuestionService.transitionRound(this);
     }
   }
 
   endGame() {
-    this.state = STATES.FINISHED;
+    this.setState(STATES.FINISHED);
+    this.emitters.forEach(emitter => emitter.emit('endGame'));
     for (let [id, player] of this.players) {
-      player.emitter.emit('endGame');
-      this.removePlayer(player);
+      player.emitter.emit('endGame', this);
     }
   }
 
@@ -66,7 +67,7 @@ class Room {
     for (let [id, player] of this.players) {
       player.emitter.emit('roundBegin', { time: this.roundTime });
     }
-    this.emitter.emit('roundBegin', { time: this.roundTime });
+    this.emitters.forEach(emitter => emitter.emit('roundBegin', { time: this.roundTime }));
     setTimeout(this.endRound.bind(this), this.roundTime);
   }
 
@@ -79,21 +80,28 @@ class Room {
       for (let [id, player] of this.players) {
         player.emitter.emit('roundEnd', ROUND_BREAK_TIME);
       }
-      this.emitter.emit('roundEnd', ROUND_BREAK_TIME);
+      this.emitters.forEach(emitter => emitter.emit('roundEnd', ROUND_BREAK_TIME));
     }
   }
 
   addPlayer(player) {
     this.players.set(player.getID(), player);
-    this.emitter.emit('playerJoined', player);
+    this.emitters.forEach(emitter => emitter.emit('playerJoined', player));
   }
 
   removePlayer(player) {
-    this.players.delete(player.getID());
-    this.emitter.emit('playerLeft', player);
-    if (this.players.size === 0) {
-      this.state = STATES.CLOSED;
+    if (this.state === STATES.FINISHED) {
+      return;
     }
+    this.players.delete(player.getID());
+    this.emitters.forEach(emitter => emitter.emit('playerLeft', player));
+    if (this.players.size === 0) {
+      this.setState(STATES.CLOSED);
+    }
+  }
+
+  setScore(player) {
+    this.emitters.forEach(emitter => emitter.emit('setScore', player));
   }
 
   getPlayers() {
@@ -101,17 +109,26 @@ class Room {
   }
 
   attachHub(emitter) {
-    this.attachedHub = true;
-    this.emitter = emitter;
-    this.emitter.emit('hubAttached', this);
+    this.emitters.push(emitter);
+    emitter.emit('setState', { state: STATE_STRINGS[this.state] })
+    emitter.emit('hubAttached', this);
     for (let [id, player] of this.players) {
-      this.emitter.emit('playerJoined', player);
+      emitter.emit('playerJoined', player);
     }
   }
 
   setAdmin(player) {
     this.admin = player;
     player.emitter.emit('setAdmin');
+  }
+
+  setState(state) {
+    this.state = state;
+    const data = { state: STATE_STRINGS[state] };
+    this.emitters.forEach(emitter => emitter.emit('setState', data));
+    for (let [id, player] of this.players) {
+      player.emitter.emit('setState', data);
+    }
   }
 
   getAdmin() {
@@ -122,8 +139,12 @@ class Room {
     return this.attachedHub;
   }
 
-  deattachHub() {
-    this.emitter = new EventEmitter();
+  isOpen() {
+    return this.state !== STATES.CLOSED;
+  }
+
+  deattachHub(emitter) {
+    this.emitters = this.emitters.splice(this.emitters.indexOf(emitter), 1);
   }
 
   getCurrentQuestion() {
@@ -132,10 +153,6 @@ class Room {
 
   getID() {
     return this.id;
-  }
-
-  isOpen() {
-    return (this.state !== STATES.CLOSED);
   }
 
   setNumRounds(numRounds) {

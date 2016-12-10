@@ -45,7 +45,7 @@ app.get('/play', (req, res) => {
 // Handle HTTP GET requests at root '/hub'
 app.get('/hub', (req, res) => {
   // Render the hub template with the isHubPage bool true
-  res.render('hub.hbs', { isHubPage: true });
+  res.render('hub.hbs', { isHubPage: true, requestedRoom: req.query.room || -1 });
 });
 
 app.get('/end', (req, res) => {
@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     PlayerController.listen(socket);
   });
   socket.on('registerAsHub', (data) => {
-    HubController.listen(socket);
+    HubController.listen(socket, parseInt(data.requestedRoomID, 10));
   });
 });
 

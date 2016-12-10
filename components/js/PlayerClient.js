@@ -18,8 +18,8 @@ socket.on('disconnect', () => {
   console.log('Disconnected');
 });
 
-socket.on('endGame', () => {
-  window.location.replace('/end');
+socket.on('endGame', (data) => {
+  window.location.replace('/hub?room=' + data.id);
 });
 
 socket.on('roomJoined', (data) => {
@@ -46,10 +46,6 @@ function updateEventTime(time) {
 }
 
 socket.on('roundBegin', (data) => {
-  if ($('body').hasClass('preGameStarted')) {
-    $('body').removeClass('preGameStarted');
-    $('body').addClass('gameStarted');
-  }
   $('#answer_list').empty();
   $('.question-text').text(data.question);
   const answers = data.answers;
@@ -65,6 +61,11 @@ socket.on('roundBegin', (data) => {
   $('#eventLabelEvent').text('Round ending in: ');
   updateEventTime(data.time);
   registerSelectAnswer();
+});
+
+socket.on('setState', (data) => {
+  console.log('setting state');
+  $('body').attr('data-state', data.state);
 });
 
 socket.on('roundEnd', (data) => {
@@ -126,7 +127,7 @@ function registerSelectAnswer() {
 }
 
 function registerStartGame() {
-  $('.preGameStarted #startGameButton').click(() => {
+  $('body[data-state="waiting"] #startGameButton').click(() => {
     socket.emit('startGame', {
       numRounds: $('#numRoundsValue').text().trim(),
       roundTime: $('#roundTimeValue').text().trim() * 1000,
@@ -149,6 +150,12 @@ function registerEditRoom() {
   $('#room_id_field').on('input', () => {
     $('#join_room_button').prop('disabled', false);
   });
+}
+
+function joinRoom() {
+  if ($('[name=roomID]').val() !== $('#roomLabel').text()) {
+    socket.emit('joinRoom', { roomID: $('[name=roomID]').val() });
+  }
 }
 
 // Execute the registrations above when the document fires a ready event

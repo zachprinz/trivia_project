@@ -5,6 +5,10 @@ module.exports = {
     return new Room();
   },
 
+  findByID(id) {
+    return Room.findByID(id);
+  },
+
   addPlayerToRoomByID(player, roomID) {
     if (Room.roomExists(roomID)) {
       Room.findByID(roomID).addPlayer(player);
@@ -22,6 +26,6 @@ module.exports = {
     }
     emitter.emit('roomJoinFailed', {});
     return false;
-  }
+  },
 
 };

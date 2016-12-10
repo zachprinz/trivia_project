@@ -91,6 +91,7 @@ ul {
   display: flex;
 }
 
+.postGameDisplay,
 .preGameDisplay {
   height: 100%;
   display: flex;
@@ -99,16 +100,20 @@ ul {
   justify-content: center;
 }
 
-.gameStarted .preGameDisplay {
-  display: none;
-}
-
 .gameDisplay {
+  flex-direction: column;
+}
+
+.gameDisplay,
+.preGameDisplay,
+.postGameDisplay {
   display: none;
 }
 
-.gameStarted .gameDisplay {
-  display: block;
+[data-state=waiting] .preGameDisplay,
+[data-state=playing] .gameDisplay,
+[data-state=finished] .postGameDisplay {
+  display: flex;
 }
 
 .infoDisplay{
@@ -200,7 +205,8 @@ ul {
 .player-label {
   font-weight: 900;
   font-size: 20px;
-  margin-bottom: 8px;
+  margin: 8px 0;
+  padding: 0 8px;
 }
 
 .playercount-label {
@@ -214,4 +220,30 @@ ul {
 
 .user-menu.adminPanel.admin {
   display: flex;
+}
+
+.player-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.player-wrapper:first-child {
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+
+.player-score {
+  font-size: 20px;
+}
+
+.player-score-label {
+  white-space: pre;
+}
+
+#playerList {
+  margin-top: 10px;
 }

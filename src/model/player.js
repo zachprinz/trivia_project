@@ -17,11 +17,16 @@ class Player {
     this.id = getNewUserID();
     this.answers = [];
     this.emitter = new EventEmitter();
+    this.score = 0;
   }
 
   addAnswer(answer) {
     this.answers.push(answer);
     this.emitter.emit('answerGraded', answer);
+    if (answer.correct) {
+      this.score += 1;
+      this.getRoom().setScore(this);
+    }
   }
 
   getID() {
@@ -37,12 +42,15 @@ class Player {
       this.room.removePlayer(this);
     }
     this.room = room;
+    this.score = 0;
+    this.answers = [];
     this.emitter.emit('roomJoined', room);
   }
 
   toJSON() {
     return {
       id: this.id,
+      score: this.score,
     };
   }
 }
