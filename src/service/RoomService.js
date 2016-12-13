@@ -8,6 +8,7 @@ module.exports = {
     return new Room();
   },
 
+  // Find a room by its ID
   findByID(id) {
     return Room.findByID(id);
   },
